@@ -15,7 +15,7 @@ export const signup = (fields_value) => (dispatch) => {
     descriptionFontSize: fields_value[5]
   };
   
-  return fetch(baseUrl + 'content', {
+  return fetch(baseUrl + '/content.json', {
       method: "POST",
       body: JSON.stringify(newContent),
       headers: {
@@ -62,7 +62,7 @@ export const putContent = (fields_value) => (dispatch) => {
     descriptionFontSize: fields_value[5]
   };
   
-  return fetch(baseUrl + 'content/'+fields_value[0], {
+  return fetch(baseUrl + '/content/'+fields_value[0]+".json", {
       method: "PATCH",
       body: JSON.stringify(newContent),
       headers: {
@@ -102,7 +102,7 @@ export const fetchMyContent = (id) => (dispatch) => {
   if(id === null){
     id = "0";
   }
-  return fetch(baseUrl + 'content/'+id)
+  return fetch(baseUrl + '/content/'+id+".json")
   .then(response => {
       if (response.ok) {
         console.log("ActionCreator-fetchmyContent, response is OK\nresponse: ", response);        
@@ -153,7 +153,7 @@ export const fetchContent = () => (dispatch) => {
 
   dispatch(contentLoading(true));
 
-  return fetch(baseUrl + 'content')
+  return fetch(baseUrl + '/content'+".json")
   .then(response => {
       if (response.ok) {
         console.log("ActionCreator-fetchContent, response is OK\nresponse: ", response);        
@@ -216,7 +216,7 @@ export const submitFeedback = ( firstName, lastName, telNum, email, agree, conta
  //previesdly the id and the date where added in comments.js
   newFeedback.date = new Date().toISOString();
   
-  return fetch(baseUrl + 'feedback', {
+  return fetch(baseUrl + '/feedback'+".json", {
       method: "POST",
       body: JSON.stringify(newFeedback),
       headers: {
@@ -268,7 +268,7 @@ export const postComment = (dishId, rating, author, comment) => (dispatch) => {
  //previesdly the id and the date where added in comments.js
   newComment.date = new Date().toISOString();
   
-  return fetch(baseUrl + 'comments', {
+  return fetch(baseUrl + '/comments'+".json", {
       method: "POST",
       body: JSON.stringify(newComment),
       headers: {
@@ -308,7 +308,7 @@ export const fetchLeaders = () => (dispatch) => {
 
   dispatch(leadersLoading(true));
 
-  return fetch(baseUrl + 'leaders')
+  return fetch(baseUrl + '/leaders'+".json")
   .then(response => {
       if (response.ok) {
         return response;
@@ -361,7 +361,7 @@ export const fetchDishes = () => (dispatch) => {
   console.log("ActionCreator-fetchDishes");
     dispatch(dishesLoading(true));
 
-    return fetch(baseUrl + 'dishes')
+    return fetch(baseUrl + '/dishes'+".json")
     .then(response => {
         if (response.ok) {
           return response;
@@ -404,7 +404,7 @@ export const addDishes = (dishes) => ({
 //////////// COMMENTS //////////////
 
 export const fetchComments = () => (dispatch) => {    
-    return fetch(baseUrl + 'comments')
+    return fetch(baseUrl + '/comments'+".json")
     .then(response => {
         if (response.ok) {
           return response;
@@ -440,7 +440,7 @@ export const fetchPromos = () => (dispatch) => {
     
     dispatch(promosLoading());
 
-    return fetch(baseUrl + 'promotions')
+    return fetch(baseUrl + '/promotions'+".json")
     .then(response => {
         if (response.ok) {
           return response;

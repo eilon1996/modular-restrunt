@@ -39,21 +39,13 @@
       "titleFontSize": "36px",
       "description": "my description1",
       "descriptionFontSize": "20px"
-    },
-    {
-      "id": "5",
-      "password": "5",
-      "title": "my title - init",
-      "titleFontSize": "36px",
-      "description": "my description1",
-      "descriptionFontSize": "20px"
     }
   ],
   "dishes": [
     {
       "id": 0,
       "name": "Uthappizza",
-      "image": "images/uthappizza.png",
+      "image": "gs://modolar-restrunt.appspot.com/uthappizza.png",
       "category": "mains",
       "label": "Hot",
       "price": "4.99",
@@ -63,7 +55,7 @@
     {
       "id": 1,
       "name": "Zucchipakoda",
-      "image": "images/zucchipakoda.png",
+      "image": "gs://modolar-restrunt.appspot.com/zucchipakoda.png",
       "category": "appetizer",
       "label": "",
       "price": "1.99",
@@ -73,7 +65,7 @@
     {
       "id": 2,
       "name": "Vadonut",
-      "image": "images/vadonut.png",
+      "image": "gs://modolar-restrunt.appspot.com/vadonut.png",
       "category": "appetizer",
       "label": "New",
       "price": "1.99",
@@ -83,22 +75,12 @@
     {
       "id": 3,
       "name": "ElaiCheese Cake",
-      "image": "images/elaicheesecake.png",
+      "image": "gs://modolar-restrunt.appspot.com/elaicheesecake.png",
       "category": "dessert",
       "label": "",
       "price": "2.99",
       "featured": false,
       "description": "A delectable, semi-sweet New York Style Cheese Cake, with Graham cracker crust and spiced with Indian cardamoms"
-    },
-    {
-      "id": 4,
-      "name": "Uthappizza",
-      "image": "images/uthappizza.png",
-      "category": "mains",
-      "label": "Hot",
-      "price": "4.99",
-      "featured": true,
-      "description": "A unique combination of Indian Uthappam (pancake) and Italian pizza, topped with Cerignola olives, ripe vine cherry tomatoes, Vidalia onion, Guntur chillies and Buffalo Paneer."
     }
   ],
   "comments": [
