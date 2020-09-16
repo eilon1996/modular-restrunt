@@ -6,6 +6,7 @@ import {NavLink} from 'react-router-dom';
 import EditBox from './EditBoxComponent';
 import {Tabs, Tab} from "react-bootstrap" ;
 import initialContent from '../redux/initialContent'
+import LogoUrl from '../shared/logoUrl'
 
 const Header = (props) => {
 
