@@ -11,7 +11,7 @@ import Footer from './FooterComponent';
 import {Switch, Route, Redirect} from 'react-router-dom';
 import { connect } from 'react-redux'
 import { actions } from 'react-redux-form';
-import { postComment, submitFeedback, putContent, signup, fetchContent,fetchMyContent, fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
+import { postComment, postFeedback, putContent, signup, fetchContent,fetchMyContent, fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter } from 'react-router';
 
@@ -43,7 +43,7 @@ const mapDispatchToProps = dispatch => {
   putContent: (fields_value) => dispatch(putContent(fields_value)),
   signup:(fields_value) => dispatch(signup(fields_value)),
   postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment)),
-  submitFeedback: (firstName, lastName, telNum, email, agree, contactType, message) => dispatch(submitFeedback(firstName, lastName, telNum, email, agree, contactType, message)),
+  postFeedback: (firstName, lastName, telNum, email, agree, contactType, message) => dispatch(postFeedback(firstName, lastName, telNum, email, agree, contactType, message)),
   
   fetchMyContent: (id) => { dispatch(fetchMyContent(id))},
 
@@ -163,7 +163,7 @@ class Main extends Component{
                   <Route path='/menu/:dishId' component={DishWithId} />
                   <Route exact path='/contactus' component={() => 
                       <Contact resetFeedbackForm={this.props.resetFeedbackForm}
-                         submitFeedback={this.props.submitFeedback}/>} />
+                      postFeedback={this.props.postFeedback}/>} />
                   <Redirect to="/home"/>
               </Switch>
             </CSSTransition>

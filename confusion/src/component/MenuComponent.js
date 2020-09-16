@@ -12,7 +12,7 @@ import { baseUrl } from '../shared/baseUrl';
         return (
             <Card>
                 <Link to={`/menu/${dish.id}`}>
-                    <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} />
+                    <CardImg width="100%" src={dish.image} alt={dish.name} />
                     <CardImgOverlay>
                         <CardTitle>{dish.name}</CardTitle>
                     </CardImgOverlay>
@@ -22,6 +22,7 @@ import { baseUrl } from '../shared/baseUrl';
         ); 
         //notice that in the Link we use back quots and not regular (bellow the Esc button)
     }
+    
     const Menu = (props) => {
         
         const menu = props.dishes.dishes.map((dish) => {

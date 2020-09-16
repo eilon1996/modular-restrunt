@@ -201,7 +201,7 @@ export const addContent = (content) => {
 
 ///////////feedback///////////
 
-export const submitFeedback = ( firstName, lastName, telNum, email, agree, contactType, message) => (dispatch) => {
+export const postFeedback = ( firstName, lastName, telNum, email, agree, contactType, message) => (dispatch) => {
 
   const newFeedback = {
     firstName: firstName,
