@@ -34,7 +34,7 @@ const mapDispatchToProps = dispatch => {
   
   console.log("mapDispatchToProps")
   return{
-  putContent: (fields_value) => dispatch(putContent(fields_value)),
+  putContent: (jsonObject) => dispatch(putContent(jsonObject)),
   signup:(fields_value) => dispatch(signup(fields_value)),
   postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment)),
   postFeedback: (firstName, lastName, telNum, email, agree, contactType, message) => dispatch(postFeedback(firstName, lastName, telNum, email, agree, contactType, message)),
@@ -93,15 +93,15 @@ class Main extends Component{
       console.log("MainComponent:HomePage", this.props.dishes);
       return(          
         <Home 
-          dish={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}
+          dish={this.props.dishes.dishes[0]}
           dishesLoading={this.props.dishes.isLoading}
           dishesErrMess={this.props.dishes.errMess}
 
-          promotion={this.props.promotions.promotions.filter((promo) => promo.featured)[0]}
+          promotion={this.props.promotions.promotions[0]}
           promoLoading={this.props.promotions.isLoading}
           promoErrMess={this.props.promotions.errMess}
 
-          leader={this.props.leaders.leaders.filter((leader) => leader)[0]}
+          leader={this.props.leaders.leaders[0]}
           leaderLoading={this.props.leaders.isLoading}
           leaderErrMess={this.props.leaders.errMess}
         />
@@ -154,9 +154,11 @@ class Main extends Component{
                           errMess={this.props.leaders.errMess}
                             />} />
                   <Route exact path='/menu' component={() => 
-                  <Menu myContent={this.props.myContent.myContent} 
+                    <Menu myContent={this.props.myContent.myContent} 
                         isLoading={this.props.myContent.isLoading}
-                        errMess={this.props.myContent.errMess}/>} />
+                        errMess={this.props.myContent.errMess}
+                        putContent={this.props.putContent} 
+                    />} />
 
                   <Route path='/menu/:dishId' component={DishWithId} />
                   <Route exact path='/contactus' component={() => 

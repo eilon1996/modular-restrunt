@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { Form, Input, Button, Label} from 'reactstrap';
-//import '../App.css';
+import {Loading } from './LoadingComponent'
 import initialContent from '../redux/initialContent'
 
 
@@ -9,43 +9,56 @@ const EditBox = (props) => {
     const [text, setText] = useState(null);
     const [edit, setEdit] = useState(false);
 
-    var field_index = 2;
     var placeHolder="";
     var type = "text";
     var fontSize = "20px"    
-    var myContent = null;
 
-    if(props.myContent === null){
-        myContent = initialContent;
-    } else{
-        myContent = props.myContent;
-    }
-    var fields = [myContent.id, myContent.password, myContent.title, myContent.titleFontSize,
-        myContent.description , myContent.descriptionFontSize, myContent.color, myContent.dishes];
+
+    if(props.myContent === null || props.myContent === undefined){
+        return <Loading/>
+    } 
     
     //var currentText = ""
     console.log("EditBox: props.myContent", JSON.stringify(props.myContent), " props.feild_name: ", props.field_name)
-    //switch (props.myContent !== null && props.field_name){
-    switch (props.field_name){
-        case "title":
-            if (text === null){
-                setText(props.myContent.title)
-            }
-            fontSize = props.myContent.titleFontSize;
-            placeHolder="restrunt name";
-            break;
+    
+    if(props.dish !== null && props.dish !== undefined){
+        switch (props.field){
+            case "title":
+                if (text === null){
+                    setText(props.myContent.dishes[props.dish.id].title.text)
+                }
+                fontSize = props.myContent.dishes[props.dish.id].title.fontSize;
+                placeHolder="dish name";
+                break;
+    
+            case "description":
+                if (text === null){
+                    setText(props.myContent.dishes[props.dish.id].description.text);
+                }
+                fontSize = props.myContent.dishes[props.dish.id].description.fontSize;
+                placeHolder="dish description";
+                type = "textarea";
+        }
+    }
+    else{
+        switch (props.field){
+            case "title":
+                if (text === null){
+                    setText(props.myContent.title.text)
+                }
+                fontSize = props.myContent.title.fontSize;
+                placeHolder="restrunt name";
+                break;
+    
+            case "description":
+                if (text === null){
+                    setText(props.myContent.description.text);
+                }
+                fontSize = props.myContent.description.fontSize;
+                placeHolder="restrunt description";
+                type = "textarea";
 
-        case "description":
-            if (text === null){
-                setText(props.myContent.description);
-            }
-            fontSize = props.myContent.descriptionFontSize;
-            field_index = 4;
-            placeHolder="restrunt description";
-            type = "textarea";
-
-        case "dish":
-            // TODO 
+        }
     }
     
     
@@ -57,15 +70,37 @@ const EditBox = (props) => {
     
   
     function handleSubmit(event){
-        fields[field_index] = text;
-        console.log(fields);
-        props.putContent(fields);
+        if(props.dish !== null && props.dish !== undefined){
+            switch (props.field){
+                case "title":
+                    props.myContent.dishes[props.dish.id].title.text = text
+                    break
+                case "description":
+                    props.myContent.dishes[props.dish.id].description.text = text
+            }
+        }
+        else{
+            switch (props.field){
+                case "title":
+                    props.myContent.title.text = text
+                    break;
+                case "description":
+                    props.myContent.description.text = text
+    
+            }
+        }
+
+        props.putContent(props.myContent);
         setEdit(false)
         event.preventDefault();
     }
+
+
     function handleOnClick(){
         setEdit(true);
     }
+
+
     function handleFontSize(amount){
         const size = parseInt(fontSize.slice(0, fontSize.length-2))
         if(size < 8){
@@ -76,9 +111,29 @@ const EditBox = (props) => {
             return;
         } 
 
-        fields[field_index+1] = String(size + amount) + "px";
-        console.log(fields);
-        props.putContent(fields);
+        const new_size = String(size + amount) + "px";
+
+        if(props.dish !== null && props.dish !== undefined){
+            switch (props.field){
+                case "title":
+                    props.myContent.dishes[props.dish.id].title.fontSize = new_size
+                    break
+                case "description":
+                    props.myContent.dishes[props.dish.id].description.fontSize = new_size
+            }
+        }
+        else{
+            switch (props.field){
+                case "title":
+                    props.myContent.title.fontSize = new_size
+                    break;
+                case "description":
+                    props.myContent.description.fontSize = new_size
+    
+            }
+        }
+
+        props.putContent(props.myContent);
     }
 
     

@@ -52,7 +52,39 @@ export const signup = (fields_value) => (dispatch) => {
 
 ///////////putContnet///////////
 
-export const putContent = (fields_value) => (dispatch) => {
+export const putContent = (jsonObject) => (dispatch) => {
+
+
+  console.log("ActionCreator-putcontent", jsonObject);
+
+  return fetch(baseUrl + '/content/'+jsonObject.id+".json", {
+      method: "PATCH",
+      body: JSON.stringify(jsonObject),
+      headers: {
+        "Content-Type": "application/json"
+      },
+      credentials: "same-origin"
+  })
+  .then(response => {
+      if (response.ok) {
+        return response;
+      } else {
+        var error = new Error('Error ' + response.status + ': ' + response.statusText);
+        error.response = response;
+        throw error;
+      }
+    },
+    error => {
+          throw error;
+    })
+  .then(response => response.json())
+  .then(response => {dispatch(addMyContent(response));  })
+  .catch(error =>  { console.log('submmit content', error.message);
+   alert('Your content could not be submited\nError: '+error.message); });
+};
+
+
+export const putContent2 = (fields_value) => (dispatch) => {
 
 
   console.log("ActionCreator-putcontent");
@@ -97,7 +129,6 @@ export const putContent = (fields_value) => (dispatch) => {
   .catch(error =>  { console.log('submmit content', error.message);
    alert('Your content could not be submited\nError: '+error.message); });
 };
-
 
 
 /// fetch myContent////

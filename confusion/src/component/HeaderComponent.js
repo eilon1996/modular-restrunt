@@ -126,9 +126,8 @@ const Header = (props) => {
 
     function changeColor(color) {
         console.log(color);  
-        const fields =  [myContent.id, myContent.password, myContent.title, myContent.titleFontSize,
-            myContent.description , myContent.descriptionFontSize, color, myContent.dishes];
-        props.putContent(fields)
+        props.myContent.color = color;
+        props.putContent(props.myContent)
     }
     
     //               blue              green             yellow             orange            red             perpel            grey 
@@ -190,8 +189,8 @@ const Header = (props) => {
                 <div className="container">
                     <div className='row row-header'>
                         <div className='col-10 col-md-6'>
-                            <EditBox field_name="title" putContent ={ props.putContent} myContent={myContent}/>
-                            <EditBox field_name="description" putContent ={ props.putContent} myContent={myContent}/>
+                            <EditBox path={myContent.id} field="title" putContent ={ props.putContent} myContent={myContent}/>
+                            <EditBox path={myContent.id} field ="description" putContent ={ props.putContent} myContent={myContent}/>
                         </div>
                         <div className='col-1 offset-md-5'>
                             {buttons}

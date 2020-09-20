@@ -2,53 +2,28 @@ import React from 'react';
 import { Card, CardImg, CardImgOverlay, CardTitle, Breadcrumb, BreadcrumbItem} from 'reactstrap';
 import {Link} from 'react-router-dom';
 import {Loading } from './LoadingComponent'
-import { baseUrl } from '../shared/baseUrl';
+import EditBox from './EditBoxComponent';
 
 //this is a functional component
 //the fingur rule is when we dont need a constractor and state we can use this
 
     //in the () you can put props and get to props.dish or props.onclick
-    function RenderMenuItem({dish}){
+    function RenderMenuItem({dish, props}){
         return (
             <Card>
                 <Link to={`/menu/${dish.id}`}>
-                    <CardImg width="100%" src={dish.image} alt={dish.name} />
+                    <CardImg width="100%" src={dish.image} alt={dish.title.text} />
+                </Link>
                     <CardImgOverlay>
-                        <CardTitle>{dish.name}</CardTitle>
+                        <CardTitle><EditBox path={props.myContent.id+"/dishes/"+dish.id} field="title" dish={dish} putContent ={props.putContent} myContent={props.myContent}/></CardTitle>
                     </CardImgOverlay>
                     
-                </Link>
             </Card>
         ); 
         //notice that in the Link we use back quots and not regular (bellow the Esc button)
     }
     
     const Menu = (props) => {
-      /*  
-        var menu = null;
-            if(props.isLoading){
-                return(
-                    <Loading/>
-                );
-            }
-            if (props.errMess){
-                return(
-                <h4>{props.myContent.errMess}</h4>
-                );
-            }
-            try{
-                menu = props.myContent.dishes.map((dish) => {
-                    return(
-                        <div  className="col-12 col-md-5 m-1" key={dish.id}>
-                            <RenderMenuItem dish={dish}/>
-                        </div>
-                    );
-                });
-                return menu2
-            }
-            catch (e){ return(<div>{e}</div>) }
-        }
-        */
                
        var menu = null;
        if(props.isLoading)
@@ -61,7 +36,7 @@ import { baseUrl } from '../shared/baseUrl';
            menu = props.myContent.dishes.map((dish) => {
                return(
                    <div  className="col-12 col-md-5 m-1" key={dish.id}>
-                       <RenderMenuItem dish={dish}/>
+                       <RenderMenuItem dish={dish} props={props}/>
                    </div>
                );
            });
