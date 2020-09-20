@@ -2,7 +2,16 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 function Footer(props){
-        return(<div className="footer">
+    
+    var footerColor = "";
+    try{
+        footerColor = props.myContent.color.slice(0,3)
+        footerColor.push(props.myContent.color[3]/2);
+        footerColor = "rgba("+footerColor+")";
+    } 
+    catch(e){}
+        return(
+        <div className="footer" style={{backgroundColor: footerColor}}>
         <div className="container">
             <div className="row justify-content-center">             
                 <div className="col-4 offset-1 col-sm-2">

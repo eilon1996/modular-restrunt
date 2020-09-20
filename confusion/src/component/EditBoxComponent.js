@@ -1,8 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { Form, Input, Button, Label} from 'reactstrap';
-import '../App.css';
+//import '../App.css';
 import initialContent from '../redux/initialContent'
-//import initialContent from './initialContent'
 
 
 const EditBox = (props) => {
@@ -22,7 +21,7 @@ const EditBox = (props) => {
         myContent = props.myContent;
     }
     var fields = [myContent.id, myContent.password, myContent.title, myContent.titleFontSize,
-        myContent.description , myContent.descriptionFontSize];
+        myContent.description , myContent.descriptionFontSize, myContent.color, myContent.dishes];
     
     //var currentText = ""
     console.log("EditBox: props.myContent", JSON.stringify(props.myContent), " props.feild_name: ", props.field_name)
@@ -44,6 +43,9 @@ const EditBox = (props) => {
             field_index = 4;
             placeHolder="restrunt description";
             type = "textarea";
+
+        case "dish":
+            // TODO 
     }
     
     
@@ -82,32 +84,35 @@ const EditBox = (props) => {
     
     if(edit){
         return(
-            <Form onSubmit={(event)=> handleSubmit(event)}>
-                <Input  style={{fontSize:fontSize}} type={type} value={text} onChange={(event) => handleChange(event)}
-                    placeholder={placeHolder}/>
-                <button className="button button-edit-box" type="submit" >save</button>
-            </Form>
+            <div className="row"  style={{ padding: "10px", margin:"0px"}}>
+                <div  className="col-12" >
+                    <form onSubmit={(event)=> handleSubmit(event)}>
+                        <input  style={{fontSize:fontSize}} type={type} value={text} onChange={(event) => handleChange(event)}
+                            placeholder={placeHolder}/>
+                        <button className="edit-save btn btn-secondary" type="submit" >save</button>
+                    </form>
+                </div>
+            </div>
         );
-        //<Button type="submit" value="Submit" className='editBoxButton'>save</Button>
     }
     else{
 
         return(
-            <div>
-                <div className="row"  style={{ padding: "10px"}}>
+                <div className="row"  style={{ padding: "10px", margin:"0px"}}>
                         <div  className="col-12" style={{fontSize:fontSize, mb:0}}>{text}</div> 
                         <div  className="col-12" >
-                            <Button style={{height: '22px', width : '50px', fontSize:'14px', padding:'0px'}}
-                                  onClick={()=>handleOnClick()}>edit</Button>
-                            <Button style={{height: '22px', width : '22px', fontSize:'14px', padding:'0px'}}
+                            <button className="edit-save btn btn-secondary" 
+                                  onClick={()=>handleOnClick()}>edit</button>
+                            <button className="edit-save-arrow btn btn-secondary" 
                                   onClick={()=>handleFontSize(+2)}>
-                                <span className="fa fa-angle-up"></span></Button>
-                            <Button style={{height: '22px', width : '22px', padding:'0px'}}
+                                <span className="fa fa-angle-up"></span>
+                            </button>
+                            <button className="edit-save-arrow btn btn-secondary" 
                                     onClick={()=>handleFontSize(-2)}>
-                                <span className="fa fa-angle-down"></span></Button>
+                                <span className="fa fa-angle-down"></span>
+                            </button>
                         </div>
                 </div>
-            </div>
         );
     }
 

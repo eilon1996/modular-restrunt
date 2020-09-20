@@ -4,7 +4,9 @@ import { baseUrl } from '../shared/baseUrl';
 
 
 ////////////  signup  ////////////
+
 export const signup = (fields_value) => (dispatch) => {
+  console.log("signup");
 
   const newContent = {
     id:fields_value[0],
@@ -12,7 +14,9 @@ export const signup = (fields_value) => (dispatch) => {
     title: fields_value[2],
     titleFontSize: fields_value[3],
     description: fields_value[4],
-    descriptionFontSize: fields_value[5]
+    descriptionFontSize: fields_value[5],
+    color: fields_value[6],
+    dishes: fields_value[7]
   };
   
   return fetch(baseUrl + '/content.json', {
@@ -38,7 +42,7 @@ export const signup = (fields_value) => (dispatch) => {
   .then(response => response.json())
   .then(response => {
     dispatch(addContent(response));
-    //alert('Your content was submited successfully');
+    alert('Your content was submited successfully');
   })
   .catch(error =>  { console.log('submmit content', error.message);
    alert('Your content could not be submited\nError: '+error.message); });
@@ -51,7 +55,7 @@ export const signup = (fields_value) => (dispatch) => {
 export const putContent = (fields_value) => (dispatch) => {
 
 
-  console.log("ActionCreator-putcontent: id: ", fields_value[0], " password: ", fields_value[1]);
+  console.log("ActionCreator-putcontent");
 
   const newContent = {
     id:fields_value[0],
@@ -59,7 +63,9 @@ export const putContent = (fields_value) => (dispatch) => {
     title: fields_value[2],
     titleFontSize: fields_value[3],
     description: fields_value[4],
-    descriptionFontSize: fields_value[5]
+    descriptionFontSize: fields_value[5],
+    color: fields_value[6],
+    dishes: fields_value[7]
   };
   
   return fetch(baseUrl + '/content/'+fields_value[0]+".json", {
@@ -99,6 +105,7 @@ export const putContent = (fields_value) => (dispatch) => {
 export const fetchMyContent = (id) => (dispatch) => {
 
   dispatch(myContentLoading(true));
+
   if(id === null){
     id = "0";
   }

@@ -24,25 +24,53 @@ import { baseUrl } from '../shared/baseUrl';
     }
     
     const Menu = (props) => {
-        
-        const menu = props.dishes.dishes.map((dish) => {
-         return(
-                <div  className="col-12 col-md-5 m-1" key={dish.id}>
-                    <RenderMenuItem dish={dish}/>
-                </div>
-            );
-        });
-
-        if(props.dishes.isLoading){
-            return(
-                <Loading/>
-            );
-        } else if (props.dishes.errMess){
-            return(
-            <h4>{props.dishes.errMess}</h4>
-            );
+      /*  
+        var menu = null;
+            if(props.isLoading){
+                return(
+                    <Loading/>
+                );
+            }
+            if (props.errMess){
+                return(
+                <h4>{props.myContent.errMess}</h4>
+                );
+            }
+            try{
+                menu = props.myContent.dishes.map((dish) => {
+                    return(
+                        <div  className="col-12 col-md-5 m-1" key={dish.id}>
+                            <RenderMenuItem dish={dish}/>
+                        </div>
+                    );
+                });
+                return menu2
+            }
+            catch (e){ return(<div>{e}</div>) }
         }
-        
+        */
+               
+       var menu = null;
+       if(props.isLoading)
+            menu = <Loading/>
+       
+       else if (props.errMess)
+            menu = <h4>{props.myContent.errMess}</h4>
+            
+       else try{
+           menu = props.myContent.dishes.map((dish) => {
+               return(
+                   <div  className="col-12 col-md-5 m-1" key={dish.id}>
+                       <RenderMenuItem dish={dish}/>
+                   </div>
+               );
+           });
+       }
+       catch (e){
+            console.log(e, props.myContent)   
+            menu = <div>catch</div> 
+        }
+   
 
         return (
             

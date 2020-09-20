@@ -19,13 +19,7 @@ import { withRouter } from 'react-router';
 const mapStateToProps = state =>{
   console.log("mapStateToProps", state.content);
 
-  /* TODO: allow easy access to all content fields
-  var content = null;
-  if(state.content){
-    content = {content:[state.content.content.id, state.content.content.password, state.content.content.title,
-       state.content.content.titleFontSize, state.content.content.description , tstate.content.content.descriptionFontSize]}
-  }
-  */
+
   return{
     myContent: state.myContent,
     content: state.content,
@@ -66,10 +60,10 @@ class Main extends Component{
       myContent:null
     }
 
-    this.setMyContent = this.setMyContent.bind(this)
+    this.fetchMyContent = this.fetchMyContent.bind(this)
  }
 
-  setMyContent(myContent){
+ fetchMyContent(myContent){
     this.setState({
       myId:myContent.id,
       myContent:myContent
@@ -107,7 +101,7 @@ class Main extends Component{
           promoLoading={this.props.promotions.isLoading}
           promoErrMess={this.props.promotions.errMess}
 
-          leader={this.props.leaders.leaders.filter((leader) => leader.featured)[0]}
+          leader={this.props.leaders.leaders.filter((leader) => leader)[0]}
           leaderLoading={this.props.leaders.isLoading}
           leaderErrMess={this.props.leaders.errMess}
         />
@@ -137,7 +131,7 @@ class Main extends Component{
         signup={this.props.signup} 
         
         myContent = {this.props.myContent.myContent}
-        setMyContent = {this.props.fetchMyContent}
+        fetchMyContent = {this.props.fetchMyContent}
         
         content = {this.props.content.content}
         contentLoading = {this.props.content.isLoading}
@@ -159,7 +153,11 @@ class Main extends Component{
                           isLoading={this.props.leaders.isLoading}
                           errMess={this.props.leaders.errMess}
                             />} />
-                  <Route exact path='/menu' component={() => <Menu dishes={this.props.dishes} />} />
+                  <Route exact path='/menu' component={() => 
+                  <Menu myContent={this.props.myContent.myContent} 
+                        isLoading={this.props.myContent.isLoading}
+                        errMess={this.props.myContent.errMess}/>} />
+
                   <Route path='/menu/:dishId' component={DishWithId} />
                   <Route exact path='/contactus' component={() => 
                       <Contact resetFeedbackForm={this.props.resetFeedbackForm}

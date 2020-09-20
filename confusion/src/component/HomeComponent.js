@@ -7,7 +7,6 @@ import { FadeTransform } from 'react-animation-components';
 
 
 function RenderCard({item, isLoading, errMess}) {
-    //alert("HomeComponent- rendercard:\nerrMess: "+ errMess+ ", isLoading: "+ isLoading)
     if (errMess != null && errMess !== undefined && errMess.length > 0){
         return(
         <h4>{errMess}</h4>

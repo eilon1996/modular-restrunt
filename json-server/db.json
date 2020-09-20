@@ -1,0 +1,342 @@
+{
+    "comments": [
+        {
+            "author": "John Lemon",
+            "comment": "Imagine all the eatables, living in conFusion!",
+            "date": "2012-10-16T17:57:28.556094Z",
+            "dishId": 0,
+            "id": 0,
+            "rating": 5
+        },
+        {
+            "author": "Paul McVites",
+            "comment": "Sends anyone to heaven, I wish I could get my mother-in-law to eat it!",
+            "date": "2014-09-05T17:57:28.556094Z",
+            "dishId": 0,
+            "id": 1,
+            "rating": 4
+        },
+        {
+            "author": "Michael Jaikishan",
+            "comment": "Eat it, just eat it!",
+            "date": "2015-02-13T17:57:28.556094Z",
+            "dishId": 0,
+            "id": 2,
+            "rating": 3
+        },
+        {
+            "author": "Ringo Starry",
+            "comment": "Ultimate, Reaching for the stars!",
+            "date": "2013-12-02T17:57:28.556094Z",
+            "dishId": 0,
+            "id": 3,
+            "rating": 4
+        },
+        {
+            "author": "25 Cent",
+            "comment": "It's your birthday, we're gonna party!",
+            "date": "2011-12-02T17:57:28.556094Z",
+            "dishId": 0,
+            "id": 4,
+            "rating": 2
+        },
+        {
+            "author": "John Lemon",
+            "comment": "Imagine all the eatables, living in conFusion!",
+            "date": "2012-10-16T17:57:28.556094Z",
+            "dishId": 1,
+            "id": 5,
+            "rating": 5
+        },
+        {
+            "author": "Paul McVites",
+            "comment": "Sends anyone to heaven, I wish I could get my mother-in-law to eat it!",
+            "date": "2014-09-05T17:57:28.556094Z",
+            "dishId": 1,
+            "id": 6,
+            "rating": 4
+        },
+        {
+            "author": "Michael Jaikishan",
+            "comment": "Eat it, just eat it!",
+            "date": "2015-02-13T17:57:28.556094Z",
+            "dishId": 1,
+            "id": 7,
+            "rating": 3
+        },
+        {
+            "author": "Ringo Starry",
+            "comment": "Ultimate, Reaching for the stars!",
+            "date": "2013-12-02T17:57:28.556094Z",
+            "dishId": 1,
+            "id": 8,
+            "rating": 4
+        },
+        {
+            "author": "25 Cent",
+            "comment": "It's your birthday, we're gonna party!",
+            "date": "2011-12-02T17:57:28.556094Z",
+            "dishId": 1,
+            "id": 9,
+            "rating": 2
+        },
+        {
+            "author": "John Lemon",
+            "comment": "Imagine all the eatables, living in conFusion!",
+            "date": "2012-10-16T17:57:28.556094Z",
+            "dishId": 2,
+            "id": 10,
+            "rating": 5
+        },
+        {
+            "author": "Paul McVites",
+            "comment": "Sends anyone to heaven, I wish I could get my mother-in-law to eat it!",
+            "date": "2014-09-05T17:57:28.556094Z",
+            "dishId": 2,
+            "id": 11,
+            "rating": 4
+        },
+        {
+            "author": "Michael Jaikishan",
+            "comment": "Eat it, just eat it!",
+            "date": "2015-02-13T17:57:28.556094Z",
+            "dishId": 2,
+            "id": 12,
+            "rating": 3
+        },
+        {
+            "author": "Ringo Starry",
+            "comment": "Ultimate, Reaching for the stars!",
+            "date": "2013-12-02T17:57:28.556094Z",
+            "dishId": 2,
+            "id": 13,
+            "rating": 4
+        },
+        {
+            "author": "25 Cent",
+            "comment": "It's your birthday, we're gonna party!",
+            "date": "2011-12-02T17:57:28.556094Z",
+            "dishId": 2,
+            "id": 14,
+            "rating": 2
+        },
+        {
+            "author": "John Lemon",
+            "comment": "Imagine all the eatables, living in conFusion!",
+            "date": "2012-10-16T17:57:28.556094Z",
+            "dishId": 3,
+            "id": 15,
+            "rating": 5
+        },
+        {
+            "author": "Paul McVites",
+            "comment": "Sends anyone to heaven, I wish I could get my mother-in-law to eat it!",
+            "date": "2014-09-05T17:57:28.556094Z",
+            "dishId": 3,
+            "id": 16,
+            "rating": 4
+        },
+        {
+            "author": "Michael Jaikishan",
+            "comment": "Eat it, just eat it!",
+            "date": "2015-02-13T17:57:28.556094Z",
+            "dishId": 3,
+            "id": 17,
+            "rating": 3
+        },
+        {
+            "author": "Ringo Starry",
+            "comment": "Ultimate, Reaching for the stars!",
+            "date": "2013-12-02T17:57:28.556094Z",
+            "dishId": 3,
+            "id": 18,
+            "rating": 4
+        },
+        {
+            "author": "25 Cent",
+            "comment": "It's your birthday, we're gonna party!",
+            "date": "2011-12-02T17:57:28.556094Z",
+            "dishId": 3,
+            "id": 19,
+            "rating": 2
+        },
+        {
+            "author": "eilon",
+            "comment": "test",
+            "date": "2020-08-29T14:25:46.815Z",
+            "dishId": 0,
+            "id": 20
+        },
+        {
+            "author": "aaa",
+            "comment": "aaa",
+            "date": "2020-09-05T11:25:58.307Z",
+            "dishId": 1,
+            "id": 21
+        }
+    ],
+    "content": [
+        {
+            "description": "my description1",
+            "descriptionFontSize": "30px",
+            "id": "1",
+            "password": "1",
+            "title": "my title1",
+            "titleFontSize": "36px"
+        },
+        {
+            "description": "my description1",
+            "descriptionFontSize": "20px",
+            "id": "2",
+            "password": "2",
+            "title": "my title2",
+            "titleFontSize": "62px"
+        },
+        {
+            "description": "my description1",
+            "descriptionFontSize": "20px",
+            "id": "aaa",
+            "password": "aaa",
+            "title": "my title",
+            "titleFontSize": "36px"
+        },
+        {
+            "description": "my description1",
+            "descriptionFontSize": "20px",
+            "id": "3",
+            "password": "3",
+            "title": "my title",
+            "titleFontSize": "36px"
+        },
+        {
+            "description": "my description1",
+            "descriptionFontSize": "20px",
+            "id": "4",
+            "password": "4",
+            "title": "my",
+            "titleFontSize": "36px"
+        }
+    ],
+    "dishes": [
+        {
+            "category": "mains",
+            "description": "A unique combination of Indian Uthappam (pancake) and Italian pizza, topped with Cerignola olives, ripe vine cherry tomatoes, Vidalia onion, Guntur chillies and Buffalo Paneer.",
+            "featured": true,
+            "id": 0,
+            "image": "https://modular-restrunt-images.s3.us-east-2.amazonaws.com/default/uthappizza.png",
+            "label": "Hot",
+            "name": "Uthappizza",
+            "price": "4.99"
+        },
+        {
+            "category": "appetizer",
+            "description": "Deep fried Zucchini coated with mildly spiced Chickpea flour batter accompanied with a sweet-tangy tamarind sauce",
+            "featured": false,
+            "id": 1,
+            "image": "https://modular-restrunt-images.s3.us-east-2.amazonaws.com/default/zucchipakoda.png",
+            "label": "",
+            "name": "Zucchipakoda",
+            "price": "1.99"
+        },
+        {
+            "category": "appetizer",
+            "description": "A quintessential ConFusion experience, is it a vada or is it a donut?",
+            "featured": false,
+            "id": 2,
+            "image": "https://modular-restrunt-images.s3.us-east-2.amazonaws.com/default/vadonut.png",
+            "label": "New",
+            "name": "Vadonut",
+            "price": "1.99"
+        },
+        {
+            "category": "dessert",
+            "description": "A delectable, semi-sweet New York Style Cheese Cake, with Graham cracker crust and spiced with Indian cardamoms",
+            "featured": false,
+            "id": 3,
+            "image": " https://modular-restrunt-images.s3.us-east-2.amazonaws.com/default/elaicheesecake.png",
+            "label": "",
+            "name": "ElaiCheese Cake",
+            "price": "2.99"
+        }
+    ],
+    "feedback": [
+        {
+            "agree": true,
+            "contactType": "Email",
+            "date": "2017-12-04T09:41:49.890Z",
+            "email": "dafdads@daffas.dfdafd",
+            "firstname": "fdas",
+            "id": 1,
+            "lastname": "afds",
+            "message": "afadsfds",
+            "telnum": "134113"
+        },
+        {
+            "agree": false,
+            "contactType": "Tel.",
+            "date": "2020-08-30T20:19:47.322Z",
+            "email": "aaa@aaa.aaa",
+            "id": 2,
+            "message": "aaa"
+        },
+        {
+            "agree": false,
+            "contactType": "Email",
+            "date": "2020-08-30T20:24:29.032Z",
+            "email": "bbb@bbb.bbb",
+            "id": 3,
+            "message": "bbbbbbb"
+        },
+        {
+            "agree": false,
+            "contactType": "Tel.",
+            "date": "2020-08-30T21:09:47.573Z",
+            "email": "cc@ccc.cc",
+            "firstname": "ccc",
+            "id": 4,
+            "lastname": "ccc",
+            "message": "ss",
+            "telnum": "3333"
+        }
+    ],
+    "leaders": [
+        {
+            "abbr": "CEO",
+            "description": "Our CEO, Peter, credits his hardworking East Asian immigrant parents who undertook the arduous journey to the shores of America with the intention of giving their children the best future. His mother's wizardy in the kitchen whipping up the tastiest dishes with whatever is available inexpensively at the supermarket, was his first inspiration to create the fusion cuisines for which The Frying Pan became well known. He brings his zeal for fusion cuisines to this restaurant, pioneering cross-cultural culinary connections.",
+            "designation": "Chief Epicurious Officer",
+            "featured": false,
+            "id": 0,
+            "image": "https://modular-restrunt-images.s3.us-east-2.amazonaws.com/default/chefs/chef2.jpeg",
+            "name": "Peter Pan"
+        },
+        {
+            "abbr": "CFO",
+            "description": "Our CFO, Danny, as he is affectionately referred to by his colleagues, comes from a long established family tradition in farming and produce. His experiences growing up on a farm in the Australian outback gave him great appreciation for varieties of food sources. As he puts it in his own words, Everything that runs, wins, and everything that stays, pays!",
+            "designation": "Chief Food Officer",
+            "featured": false,
+            "id": 1,
+            "image": " https://modular-restrunt-images.s3.us-east-2.amazonaws.com/default/chefs/chef1.jpeg",
+            "name": "Dhanasekaran Witherspoon"
+        },
+        {
+            "abbr": "CTO",
+            "description": "Blessed with the most discerning gustatory sense, Agumbe, our CFO, personally ensures that every dish that we serve meets his exacting tastes. Our chefs dread the tongue lashing that ensues if their dish does not meet his exacting standards. He lives by his motto, You click only if you survive my lick.",
+            "designation": "Chief Taste Officer",
+            "featured": false,
+            "id": 2,
+            "image": "https://modular-restrunt-images.s3.us-east-2.amazonaws.com/default/chefs/chef3.jpeg",
+            "name": "Agumbe Tang"
+        }
+    ],
+    "promotions": [
+        {
+            "description": "Featuring mouthwatering combinations with a choice of five different salads, six enticing appetizers, six main entrees and five choicest desserts. Free flowing bubbly and soft drinks. All for just $19.99 per person ",
+            "featured": true,
+            "id": 0,
+            "image": "https://modular-restrunt-images.s3.us-east-2.amazonaws.com/default/buffet.png",
+            "label": "New",
+            "name": "Weekend Grand Buffet",
+            "price": "19.99"
+        }
+    ]
+}

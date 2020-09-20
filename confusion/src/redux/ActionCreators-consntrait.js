@@ -31,7 +31,9 @@ export const signup = (fields_value) => fetch("content", fields_value[0], "POST"
   title: fields_value[2],
   titleFontSize: fields_value[3],
   description: fields_value[4],
-  descriptionFontSize: fields_value[5]
+  descriptionFontSize: fields_value[5],
+  color: fields_value[6],
+  dishes: fields_value[7]
 })
 
 
@@ -43,7 +45,9 @@ export const putContent = (fields_value) => fetch("myContent", fields_value[0], 
   title: fields_value[2],
   titleFontSize: fields_value[3],
   description: fields_value[4],
-  descriptionFontSize: fields_value[5]
+  descriptionFontSize: fields_value[5],
+  color: fields_value[6],
+  dishes: fields_value[7]
 })
 
 ////////FETCH //////////////
