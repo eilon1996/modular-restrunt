@@ -6,7 +6,7 @@ import {NavLink} from 'react-router-dom';
 import EditBox from './EditBoxComponent';
 import {Tabs, Tab} from "react-bootstrap" ;
 import initialContent from '../redux/initialContent'
-import LogoUrl from '../shared/logoUrl'
+import {LogoUrl} from '../shared/externalUrl'
 import {useForm} from 'react-hook-form'
 import {addMyContent} from '../redux/ActionCreators'
 
@@ -34,7 +34,7 @@ const Header = (props) => {
     var myContent = null;
     var title = ""
 
-    if(props.myContent === null){
+    if(props.myContent === null || props.isLoading == true){
         myContent = initialContent;
     } else{
         myContent = props.myContent;
@@ -90,38 +90,14 @@ const Header = (props) => {
         else{
             const fields = [signupUsername, signupPassword, myContent.title, myContent.titleFontSize,
                 myContent.description , myContent.descriptionFontSize, myContent.color, myContent.dishes];
-            const id = async () => await props.signup(fields)
-            const res1 = id();
-            console.log("res1: ", res1)
 
-            // not working
-            addMyContent({
-                id:fields[0],
-                password:fields[1],
-                title: fields[2],
-                titleFontSize: fields[3],
-                description: fields[4],
-                descriptionFontSize: fields[5]
-              });
-            
-            // we wait for a secound so that the server will be update and we could search the recently add content
-            // a better solotion is to get back from the firebase the ID 
-            /*
-            setTimeout(function() {
-                const userContent = Object.keys(props.content).map((key) =>{
-                    if(signupUsername === props.content[key].id)
-                    return [key, props.content[key]]
-                }).filter((value) => value !== undefined);
-                props.fetchMyContent(userContent[0])
-
-            }, 1500);
-            */
+            props.myContent.id = signupUsername;
+            props.myContent.password = signupPassword;
+            props.signup(props.myContent)
 
 
             //intial user 0
-        }
-        
-    
+        }   
     }
 
     function changeColor(color) {
@@ -151,7 +127,7 @@ const Header = (props) => {
                 <div className="container">
                     <NavbarToggler onClick={() => setIsNavOpen(!isNavOpen)}/>
                     <NavbarBrand className='mr-auto' href="/">
-                        <img src='assets/images/logo.png' height="30" width="41"
+                        <img src={LogoUrl} height="30" width="41"
                             alt={title}/>
                     </NavbarBrand>
                     <Collapse isOpen={isNavOpen} navbar>
@@ -208,11 +184,11 @@ const Header = (props) => {
                     >
                         <Tab eventKey="login" title="login">
                             <form name="login" onSubmit={handleLogin}>
-                                <label>user name</label>
-                                <input name="loginUsername" value={loginUsername}
+                                <label className="col-12 col-md-3">user name</label>
+                                <input className="col-12 col-md-9" name="loginUsername" value={loginUsername}
                                 onChange={(event) => setLoginUsername(event.target.value)}/>
-                                <label>password</label>
-                                <input type="password" name="loginPassword" value={loginPassword}
+                                <label className="col-12 col-md-3">password</label>
+                                <input className="col-12 col-md-9" type="password" name="loginPassword" value={loginPassword}
                                  onChange={(event) => setLoginPassword(event.target.value)} 
                                     ref={register({ required: true })} />
                                 {errors.exampleRequired && <span>This field is required</span>}
@@ -222,17 +198,17 @@ const Header = (props) => {
 
                         <Tab eventKey="signUp" title="sign up">
                             <form name="signup" onSubmit={handleSignup}>
-                                <label>user name</label>
-                                <input name="signupUsername" value={signupUsername}
+                                <label className="col-12 col-md-3" style={{marginTop:"4px", marginBottom:"8px"}}>user name</label>
+                                <input className="col-12 col-md-9" style={{marginTop:"4px", marginBottom:"8px"}} name="signupUsername" value={signupUsername}
                                  onChange={(event) => setSignupUsername(event.target.value)}/>
                                 
-                                <label>password</label>
-                                <input type="password" name="signupPassword" value={signupPassword}
+                                <label className="col-12 col-md-3" style={{marginTop:"4px", marginBottom:"8px"}}>password</label>
+                                <input className="col-12 col-md-9" style={{marginTop:"4px", marginBottom:"8px"}} type="password" name="signupPassword" value={signupPassword}
                                 onChange={(event) => setSignupPassword(event.target.value)}
                                 ref={register({ required: true })} />
                                 
-                                <label>re-enter password</label>
-                                <input type="password" name="signupRePassword" value={signupRePassword}
+                                <label className="col-12 col-md-3" style={{marginTop:"4px", marginBottom:"8px"}}>re-enter password</label>
+                                <input className="col-12 col-md-9" style={{marginTop:"4px", marginBottom:"8px"}} type="password" name="signupRePassword" value={signupRePassword}
                                 onChange={(event) => setSignupRePassword(event.target.value)}
                                 ref={register({ required: true })}  />
                                 

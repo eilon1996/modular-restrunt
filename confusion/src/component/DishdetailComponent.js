@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem, Button, Modal, ModalBody, ModalHeader, Label, Col , Row } from 'reactstrap'
 import { Control, LocalForm, Errors} from 'react-redux-form';
 import {Loading} from './LoadingComponent';
-import { baseUrl } from '../shared/baseUrl';
+import { baseUrl } from '../shared/externalUrl';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 const required = (val) => val && val.length;

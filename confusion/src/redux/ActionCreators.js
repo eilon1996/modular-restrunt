@@ -1,27 +1,21 @@
 
 import * as ActionTypes from './ActionTypes';
-import { baseUrl } from '../shared/baseUrl';
+import { baseUrl } from '../shared/externalUrl';
+import { object } from 'prop-types';
 
 
 ////////////  signup  ////////////
 
-export const signup = (fields_value) => (dispatch) => {
+export const signup = (jsonObject) => (dispatch) => {
   console.log("signup");
-
-  const newContent = {
-    id:fields_value[0],
-    password:fields_value[1],
-    title: fields_value[2],
-    titleFontSize: fields_value[3],
-    description: fields_value[4],
-    descriptionFontSize: fields_value[5],
-    color: fields_value[6],
-    dishes: fields_value[7]
-  };
+  const id = String(jsonObject.id);
+  const newJson = {};
+  newJson[id]=jsonObject;
+  
   
   return fetch(baseUrl + '/content.json', {
-      method: "POST",
-      body: JSON.stringify(newContent),
+      method: "PATCH",
+      body: JSON.stringify(newJson),
       headers: {
         "Content-Type": "application/json"
       },
@@ -41,8 +35,11 @@ export const signup = (fields_value) => (dispatch) => {
     })
   .then(response => response.json())
   .then(response => {
-    dispatch(addContent(response));
+    dispatch(addMyContent(response[id])); // use fetch
     alert('Your content was submited successfully');
+  })
+  .then(response => {
+    dispatch(addContent(response));
   })
   .catch(error =>  { console.log('submmit content', error.message);
    alert('Your content could not be submited\nError: '+error.message); });
@@ -83,52 +80,6 @@ export const putContent = (jsonObject) => (dispatch) => {
    alert('Your content could not be submited\nError: '+error.message); });
 };
 
-
-export const putContent2 = (fields_value) => (dispatch) => {
-
-
-  console.log("ActionCreator-putcontent");
-
-  const newContent = {
-    id:fields_value[0],
-    password:fields_value[1],
-    title: fields_value[2],
-    titleFontSize: fields_value[3],
-    description: fields_value[4],
-    descriptionFontSize: fields_value[5],
-    color: fields_value[6],
-    dishes: fields_value[7]
-  };
-  
-  return fetch(baseUrl + '/content/'+fields_value[0]+".json", {
-      method: "PATCH",
-      body: JSON.stringify(newContent),
-      headers: {
-        "Content-Type": "application/json"
-      },
-      credentials: "same-origin"
-  })
-  .then(response => {
-      if (response.ok) {
-        return response;
-      } else {
-        var error = new Error('Error ' + response.status + ': ' + response.statusText);
-        error.response = response;
-        throw error;
-      }
-    },
-    error => {
-          throw error;
-    })
-  .then(response => response.json())
-  .then(response => {
-    //dispatch(addContent(response));
-    dispatch(addMyContent(response));
-    //alert('Your content was submited successfully');
-  })
-  .catch(error =>  { console.log('submmit content', error.message);
-   alert('Your content could not be submited\nError: '+error.message); });
-};
 
 
 /// fetch myContent////

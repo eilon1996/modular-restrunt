@@ -93,6 +93,15 @@ class Main extends Component{
       console.log("MainComponent:HomePage", this.props.dishes);
       return(          
         <Home 
+
+          isLoading = {this.props.myContent.isLoading}
+          myContent = {this.props.myContent.myContent}
+          ErrMess={this.props.myContent.errMess}
+
+        />
+
+      /*
+      
           dish={this.props.dishes.dishes[0]}
           dishesLoading={this.props.dishes.isLoading}
           dishesErrMess={this.props.dishes.errMess}
@@ -104,7 +113,7 @@ class Main extends Component{
           leader={this.props.leaders.leaders[0]}
           leaderLoading={this.props.leaders.isLoading}
           leaderErrMess={this.props.leaders.errMess}
-        />
+          */
       );
     }
 
@@ -130,6 +139,7 @@ class Main extends Component{
         putContent={this.props.putContent} 
         signup={this.props.signup} 
         
+        isLoading = {this.props.myContent.isLoading}
         myContent = {this.props.myContent.myContent}
         fetchMyContent = {this.props.fetchMyContent}
         
@@ -149,9 +159,10 @@ class Main extends Component{
               <Switch location={this.props.location}>
                   <Route path='/home' component={HomePage} />
                   <Route exact path='/aboutus' component={() => 
-                      <About leaders={this.props.leaders}        
-                          isLoading={this.props.leaders.isLoading}
-                          errMess={this.props.leaders.errMess}
+                      <About myContent={this.props.myContent.myContent} 
+                      isLoading={this.props.myContent.isLoading}
+                      errMess={this.props.myContent.errMess}
+                      putContent={this.props.putContent} 
                             />} />
                   <Route exact path='/menu' component={() => 
                     <Menu myContent={this.props.myContent.myContent} 
@@ -168,7 +179,8 @@ class Main extends Component{
               </Switch>
             </CSSTransition>
           </TransitionGroup>
-        <Footer/>
+        <Footer 
+        myContent = {this.props.myContent.myContent}/>
         </div>
   );
   }

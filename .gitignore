@@ -1,0 +1,33 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+confusion/node_modules
+confusion/.pnp
+confusion/.pnp.js
+
+# testing
+confusion/coverage
+
+# production
+confusion/build
+
+# misc
+confusion/.DS_Store
+.env
+confusion/.env.local
+confusion/.env.development.local
+confusion/.env.test.local
+confusion/.env.production.local
+
+confusion/npm-debug.log*
+confusion/yarn-debug.log*
+confusion/yarn-error.log*
+
+.git
+json-server
+db.json
+
+confusion/src/component/dist
+confusion/src/redux/dist
+confusion/.vscode
+confusion/build

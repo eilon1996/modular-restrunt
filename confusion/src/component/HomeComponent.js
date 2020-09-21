@@ -2,22 +2,13 @@ import React from 'react';
 import { Card, CardImg, CardText, CardBody,
     CardTitle, CardSubtitle} from 'reactstrap';
 import {Loading } from './LoadingComponent';
-import { baseUrl } from '../shared/baseUrl';
+import { baseUrl } from '../shared/externalUrl';
 import { FadeTransform } from 'react-animation-components';
 
 
-function RenderCard({item, isLoading, errMess}) {
-    if (errMess != null && errMess !== undefined && errMess.length > 0){
-        return(
-        <h4>{errMess}</h4>
-        );
-    }
-    else if(isLoading){
-        return(
-            <Loading/>
-        );
-    }
-    else if(item === undefined){
+function RenderCard({item}) {
+
+    if(item === undefined){
         return(
             <Card>
                 <CardBody>
@@ -29,11 +20,11 @@ function RenderCard({item, isLoading, errMess}) {
     return(
         <FadeTransform in transformProps={{exitTransform: 'scale(0.5) translateY(-50%)' }}>
             <Card>
-                <CardImg src={item.image} alt={item.name} />
+                <CardImg src={item.image} alt={item.title.text} />
                 <CardBody>
-                <CardTitle>{item.name}</CardTitle>
+                <CardTitle>{item.title.text}</CardTitle>
                 {item.designation ? <CardSubtitle>{item.designation}</CardSubtitle> : null }
-                <CardText>{item.description}</CardText>
+                <CardText>{item.description.text}</CardText>
                 </CardBody>
             </Card>
         </FadeTransform>
@@ -42,17 +33,40 @@ function RenderCard({item, isLoading, errMess}) {
 }
 
 function Home(props) {
+
+    if(props.isLoading){
+        
     return(
         <div className="container">
             <div className="row align-items-start">
                 <div className="col-12 col-md m-1">
-                    <RenderCard item={props.dish} isLoading={props.dishesLoading} errMess={props.dishesErrMess} />
+                    <Loading />
                 </div>
                 <div className="col-12 col-md m-1">
-                    <RenderCard item={props.promotion} isLoading={props.promoLoading} errMess={props.promoErrMess} />
+                    <Loading />
                 </div>
                 <div className="col-12 col-md m-1">
-                    <RenderCard item={props.leader}  isLoading={props.leaderLoading} errMess={props.leaderErrMess}/>
+                    <Loading />
+                </div>
+            </div>
+        </div>
+        );
+    }
+    if(props.errMess !== null && props.errMess !== undefined){
+        return (<div>{props.errMess}</div>)
+    }
+
+    return(
+        <div className="container">
+            <div className="row align-items-start">
+                <div className="col-12 col-md m-1">
+                    <RenderCard item={props.myContent.dishes[0]}/>
+                </div>
+                <div className="col-12 col-md m-1">
+                    <RenderCard item={props.myContent.thePlace[0]}/>
+                </div>
+                <div className="col-12 col-md m-1">
+                    <RenderCard item={props.myContent.leaders[0]} />
                 </div>
             </div>
         </div>
