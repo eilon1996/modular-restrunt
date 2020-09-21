@@ -7,7 +7,6 @@ import { object } from 'prop-types';
 ////////////  signup  ////////////
 
 export const signup = (jsonObject) => (dispatch) => {
-  console.log("signup");
   const id = String(jsonObject.id);
   const newJson = {};
   newJson[id]=jsonObject;
@@ -22,6 +21,7 @@ export const signup = (jsonObject) => (dispatch) => {
       credentials: "same-origin"
   })
   .then(response => {
+    console.log("signup");
       if (response.ok) {
         return response;
       } else {
@@ -36,10 +36,10 @@ export const signup = (jsonObject) => (dispatch) => {
   .then(response => response.json())
   .then(response => {
     dispatch(addMyContent(response[id])); // use fetch
-    alert('Your content was submited successfully');
   })
   .then(response => {
     dispatch(addContent(response));
+    alert('your sign up was successful');
   })
   .catch(error =>  { console.log('submmit content', error.message);
    alert('Your content could not be submited\nError: '+error.message); });

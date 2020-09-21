@@ -50,10 +50,10 @@ const Header = (props) => {
         const userContent = Object.values(props.content).filter((user) => user.id === loginUsername)[0];
         if(userContent){
             
+            event.preventDefault();
             if(userContent.password === loginPassword){
                 props.fetchMyContent(loginUsername)
                 setIsModalOpen(!isModalOpen);
-                event.preventDefault();
             }
             else{
                 //wrong password
@@ -62,6 +62,7 @@ const Header = (props) => {
         }
         else{
             //create new user?
+            event.preventDefault();
             tmpError = "user name not found\nyou can easily creat new account in the sign up";
         }
     
@@ -84,6 +85,7 @@ const Header = (props) => {
             tmpError += "user name already exist";
         }
         
+        event.preventDefault();
         if(tmpError !== ""){
             setSignupError(tmpError);
         }
