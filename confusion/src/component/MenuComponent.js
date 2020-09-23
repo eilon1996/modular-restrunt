@@ -1,22 +1,21 @@
 import React from 'react';
 import { Card, CardImg, CardImgOverlay, CardTitle, Breadcrumb, BreadcrumbItem} from 'reactstrap';
 import {Link} from 'react-router-dom';
-import {Loading } from './LoadingComponent'
-import EditBox from './EditBoxComponent';
+import Loading  from './LoadingComponent'
 
 //this is a functional component
 //the fingur rule is when we dont need a constractor and state we can use this
 
     //in the () you can put props and get to props.dish or props.onclick
-    function RenderMenuItem({dish, props}){
+    function RenderMenuItem({dish}){
         return (
             <Card>
                 <Link to={`/menu/${dish.id}`}>
                     <CardImg width="100%" src={dish.image} alt={dish.title.text} />
-                </Link>
-                    <CardImgOverlay>
-                        <CardTitle><EditBox path={props.myContent.id+"/dishes/"+dish.id} field="title" dish={dish} putContent ={props.putContent} myContent={props.myContent}/></CardTitle>
+                    <CardImgOverlay >
+                        {dish.title.text}
                     </CardImgOverlay>
+                </Link>
                     
             </Card>
         ); 

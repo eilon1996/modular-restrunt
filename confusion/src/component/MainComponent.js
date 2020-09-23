@@ -11,7 +11,7 @@ import Footer from './FooterComponent';
 import {Switch, Route, Redirect} from 'react-router-dom';
 import { connect } from 'react-redux'
 import { actions } from 'react-redux-form';
-import { postComment, postFeedback, putContent, signup, fetchContent,fetchMyContent, fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
+import { postComment, postFeedback, putContent, signup, fetchContent,fetchMyContent, fetchComments } from '../redux/ActionCreators';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter } from 'react-router';
 
@@ -23,10 +23,7 @@ const mapStateToProps = state =>{
   return{
     myContent: state.myContent,
     content: state.content,
-    dishes: state.dishes,
-    comments: state.comments,
-    promotions: state.promotions,
-    leaders: state.leaders
+    comments: state.comments
   }
 }
 
@@ -34,95 +31,52 @@ const mapDispatchToProps = dispatch => {
   
   console.log("mapDispatchToProps")
   return{
-  putContent: (jsonObject) => dispatch(putContent(jsonObject)),
-  signup:(fields_value) => dispatch(signup(fields_value)),
-  postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment)),
-  postFeedback: (firstName, lastName, telNum, email, agree, contactType, message) => dispatch(postFeedback(firstName, lastName, telNum, email, agree, contactType, message)),
-  
-  fetchMyContent: (id) => { dispatch(fetchMyContent(id))},
-
-  fetchContent: () => { dispatch(fetchContent())},
-  fetchDishes: () => {  dispatch(fetchDishes())},
-  resetFeedbackForm: () => { dispatch(actions.reset('feedback'))},
-  fetchComments: () => dispatch(fetchComments()),
-  fetchPromos: () => dispatch(fetchPromos()),
-  fetchLeaders: () => dispatch(fetchLeaders())
+    putContent: (jsonObject) => dispatch(putContent(jsonObject)),
+    signup:(fields_value) => dispatch(signup(fields_value)),
+    postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment)),
+    postFeedback: (firstName, lastName, telNum, email, agree, contactType, message) => dispatch(postFeedback(firstName, lastName, telNum, email, agree, contactType, message)),
+    
+    fetchMyContent: (id) =>  dispatch(fetchMyContent(id)),
+    fetchContent: () =>  dispatch(fetchContent()),
+    resetFeedbackForm: () =>  dispatch(actions.reset('feedback')),
+    fetchComments: () => dispatch(fetchComments())
    }
   };
 
 class Main extends Component{
 
-  constructor(props){
-    super(props);
-
-    this.state = {
-      myId:"0",
-      myContent:null
-    }
-
-    this.fetchMyContent = this.fetchMyContent.bind(this)
- }
-
- fetchMyContent(myContent){
-    this.setState({
-      myId:myContent.id,
-      myContent:myContent
-    });
-    
-  }
-
   componentDidMount() {
 
     console.log("componentDidMount1")
 
-    this.props.fetchMyContent(this.state.myId);
+    this.props.fetchMyContent(0);
     this.props.fetchContent();
-
-    this.props.fetchDishes();
     this.props.fetchComments();
-    this.props.fetchPromos();
-    this.props.fetchLeaders();
     
-  console.log("componentDidMount2")
+    console.log("componentDidMount2")
   }
 
-
   render(){
-
     const HomePage = () => {
-      console.log("MainComponent:HomePage", this.props.dishes);
+      console.log("MainComponent:HomePage");
       return(          
         <Home 
-
           isLoading = {this.props.myContent.isLoading}
           myContent = {this.props.myContent.myContent}
-          ErrMess={this.props.myContent.errMess}
-
+          errMess={this.props.myContent.errMess}
         />
-
-      /*
-      
-          dish={this.props.dishes.dishes[0]}
-          dishesLoading={this.props.dishes.isLoading}
-          dishesErrMess={this.props.dishes.errMess}
-
-          promotion={this.props.promotions.promotions[0]}
-          promoLoading={this.props.promotions.isLoading}
-          promoErrMess={this.props.promotions.errMess}
-
-          leader={this.props.leaders.leaders[0]}
-          leaderLoading={this.props.leaders.isLoading}
-          leaderErrMess={this.props.leaders.errMess}
-          */
       );
     }
 
     const DishWithId = ({match}) => {
       return(
         <DishDetail
-         dish={this.props.dishes.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]}
-          isLoading={this.props.dishes.isLoading}
-          errMess={this.props.dishes.errMess}
+          dishId = {parseInt(match.params.dishId,10)}
+          
+          putContent={this.props.putContent} 
+          myContent = {this.props.myContent.myContent}
+          isLoading = {this.props.myContent.isLoading}
+          erMess={this.props.myContent.errMess}
 
           comments={this.props.comments.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}
           commentsErrMess={this.props.comments.errMess}
@@ -179,8 +133,7 @@ class Main extends Component{
               </Switch>
             </CSSTransition>
           </TransitionGroup>
-        <Footer 
-        myContent = {this.props.myContent.myContent}/>
+        <Footer myContent = {this.props.myContent.myContent}/>
         </div>
   );
   }

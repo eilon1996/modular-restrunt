@@ -3,23 +3,25 @@ import { Card, CardImg, CardText, CardBody, CardTitle} from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem, Button, Modal, ModalBody, ModalHeader, Label, Col , Row } from 'reactstrap'
 import { Control, LocalForm, Errors} from 'react-redux-form';
-import {Loading} from './LoadingComponent';
+import Loading from './LoadingComponent';
 import { baseUrl } from '../shared/externalUrl';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
+import EditBox from './EditBoxComponent';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => val => !(val) || (val.length <= len)
 const minLength = (len) => val => !(val) || (val.length >= len)
 
 
-function RenderDish({dish}){
+function RenderDish({dish, props}){
     return(
         <FadeTransform in transformProps={{ exitTransform: 'scale(0.5) translateY(-50%)' }}>
         <Card>
-            <CardImg top src={dish.image} alt={dish.name} />
+            <CardImg top src={dish.image} alt={dish.title.text} />
             <CardBody>
-                <CardTitle>{dish.name}</CardTitle>
-                <CardText>{dish.description}</CardText>
+                <CardText> 
+                    <EditBox field="description" type="dishes" id={props.dishId} putContent ={props.putContent} myContent={props.myContent}/>
+                </CardText>
             </CardBody>
         </Card>
         </FadeTransform>
@@ -154,6 +156,7 @@ class CommentForm extends Component{
 class DishDetail extends Component {
     constructor(props) {
         super(props);
+        
     }
 
     render() {
@@ -161,41 +164,45 @@ class DishDetail extends Component {
             return (
                 <div className="container">
                     <div className="row">
-                        <h3>aaaa</h3>
                         <Loading/>
                     </div>
                 </div>
             );
-        }else if(this.props.errMess){
-            return (
-            <div>
-                <h4>{this.props.errMess}</h4>
-            </div>
-            );
         }
+        try{
             return(
                 <div className="container">
                     <Breadcrumb>
                         <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
-                        <BreadcrumbItem active>{this.props.dish.name}</BreadcrumbItem>
+                        <BreadcrumbItem active>{this.props.myContent.dishes[this.props.dishId].title.text}</BreadcrumbItem>
                     </Breadcrumb>
                     <div className="col-12">
-                        <h3>{this.props.dish.name}</h3>
+                          <EditBox type="dishes" field="title" id={this.props.dishId} putContent ={this.props.putContent} myContent={this.props.myContent}/>
                         <hr />
                     </div>       
                     <div className="row">
                         <div className="col-12 col-md-5 m-1">
-                            <RenderDish dish={this.props.dish}/>
+                            <RenderDish dish={this.props.myContent.dishes[this.props.dishId]} props={this.props}/>
                         </div>
                         <div className="col-12 col-md-5 m-1">
                             <RenderComments comments={this.props.comments} 
                                 postComment={this.props.postComment} 
-                                dishId={this.props.dish.id}/>
+                                dishId={this.props.dishId}/>
                         </div>
                     </div>         
                 </div>
             );
+
         }
+        catch (e){
+
+            return (
+                <div>
+                    <h4>{this.props.errMess}{e}</h4>
+                </div>
+            );
+        }
+    }
 }
     
 export default DishDetail;

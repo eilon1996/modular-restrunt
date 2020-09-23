@@ -1,7 +1,6 @@
 
 import * as ActionTypes from './ActionTypes';
 import { baseUrl } from '../shared/externalUrl';
-import { object } from 'prop-types';
 
 
 ////////////  signup  ////////////
@@ -86,6 +85,7 @@ export const putContent = (jsonObject) => (dispatch) => {
 
 export const fetchMyContent = (id) => (dispatch) => {
 
+  console.log("fetchMyContent, id:", id);
   dispatch(myContentLoading(true));
 
   if(id === null){
@@ -139,8 +139,6 @@ export const addMyContent = (myContent) => {
 /// fetch content////
 
 export const fetchContent = () => (dispatch) => {
-
-  dispatch(contentLoading(true));
 
   return fetch(baseUrl + '/content'+".json")
   .then(response => {

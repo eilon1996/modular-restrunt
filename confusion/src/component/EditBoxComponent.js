@@ -1,66 +1,37 @@
-import React, {useState, useEffect} from 'react';
-import { Form, Input, Button, Label} from 'reactstrap';
-import {Loading } from './LoadingComponent'
-import initialContent from '../redux/initialContent'
+import React, {useState} from 'react';
+import Loading  from './LoadingComponent'
 
 
 const EditBox = (props) => {
 
     const [text, setText] = useState(null);
     const [edit, setEdit] = useState(false);
-
-    var placeHolder="";
-    var type = "text";
-    var fontSize = "20px"    
-
-
+    
     if(props.myContent === null || props.myContent === undefined){
         return <Loading/>
     } 
     
-    //var currentText = ""
-    console.log("EditBox: props.myContent", JSON.stringify(props.myContent), " props.feild_name: ", props.field_name)
-    
-    if(props.dish !== null && props.dish !== undefined){
-        switch (props.field){
-            case "title":
-                if (text === null){
-                    setText(props.myContent.dishes[props.dish.id].title.text)
-                }
-                fontSize = props.myContent.dishes[props.dish.id].title.fontSize;
-                placeHolder="dish name";
-                break;
-    
-            case "description":
-                if (text === null){
-                    setText(props.myContent.dishes[props.dish.id].description.text);
-                }
-                fontSize = props.myContent.dishes[props.dish.id].description.fontSize;
-                placeHolder="dish description";
-                type = "textarea";
-        }
-    }
-    else{
-        switch (props.field){
-            case "title":
-                if (text === null){
-                    setText(props.myContent.title.text)
-                }
-                fontSize = props.myContent.title.fontSize;
-                placeHolder="restrunt name";
-                break;
-    
-            case "description":
-                if (text === null){
-                    setText(props.myContent.description.text);
-                }
-                fontSize = props.myContent.description.fontSize;
-                placeHolder="restrunt description";
-                type = "textarea";
+    console.log("EditBox: props.myContent", JSON.stringify(props.myContent), " props.feild_name: ", props.field)
 
-        }
-    }
+    if (text === null)
+        setText(props.myContent[props.type][props.id][props.field].text)
     
+
+    
+    //props.field   title/description
+    //props.id      0/1/2..
+    //props.type    head/dish/
+
+    var fontSize = props.myContent[props.type][props.id][props.field].fontSize;
+    var placeHolder=props.type + props.field;
+    var input;
+    if (props.field === "title")
+        input = <input  style={{fontSize:fontSize}} value={text} onChange={(event) => handleChange(event)}
+                        placeholder={placeHolder}/>
+    else
+        input = <textarea  style={{fontSize:fontSize}} value={text} onChange={(event) => handleChange(event)}
+                        placeholder={placeHolder}/>
+
     
     function handleChange(event){        
         console.log("EditBox: event.value: ", event.target.value);
@@ -70,26 +41,8 @@ const EditBox = (props) => {
     
   
     function handleSubmit(event){
-        if(props.dish !== null && props.dish !== undefined){
-            switch (props.field){
-                case "title":
-                    props.myContent.dishes[props.dish.id].title.text = text
-                    break
-                case "description":
-                    props.myContent.dishes[props.dish.id].description.text = text
-            }
-        }
-        else{
-            switch (props.field){
-                case "title":
-                    props.myContent.title.text = text
-                    break;
-                case "description":
-                    props.myContent.description.text = text
-    
-            }
-        }
-
+        props.myContent[props.type][props.id][props.field].text = text
+        props.myContent[props.type][props.id][props.field].text = text
         props.putContent(props.myContent);
         setEdit(false)
         event.preventDefault();
@@ -113,26 +66,7 @@ const EditBox = (props) => {
 
         const new_size = String(size + amount) + "px";
 
-        if(props.dish !== null && props.dish !== undefined){
-            switch (props.field){
-                case "title":
-                    props.myContent.dishes[props.dish.id].title.fontSize = new_size
-                    break
-                case "description":
-                    props.myContent.dishes[props.dish.id].description.fontSize = new_size
-            }
-        }
-        else{
-            switch (props.field){
-                case "title":
-                    props.myContent.title.fontSize = new_size
-                    break;
-                case "description":
-                    props.myContent.description.fontSize = new_size
-    
-            }
-        }
-
+        props.myContent[props.type][props.id][props.field].fontSize = new_size;
         props.putContent(props.myContent);
     }
 
@@ -142,8 +76,7 @@ const EditBox = (props) => {
             <div className="row"  style={{ padding: "10px", margin:"0px"}}>
                 <div  className="col-12" >
                     <form onSubmit={(event)=> handleSubmit(event)}>
-                        <input  style={{fontSize:fontSize}} type={type} value={text} onChange={(event) => handleChange(event)}
-                            placeholder={placeHolder}/>
+                        {input}
                         <button className="edit-save btn btn-secondary" type="submit" >save</button>
                     </form>
                 </div>
@@ -174,97 +107,3 @@ const EditBox = (props) => {
 }
 
 export default EditBox;
-
-
-
-
-
-
-/*
-import React, {Component} from 'react';
-import { Breadcrumb, BreadcrumbItem, Button, Modal, ModalBody, ModalHeader, Label, Col , Row } from 'reactstrap'
-import { Control, Form, Errors, Input} from 'react-redux-form';
-
-class EditBox extends Component{
-
-    constructor(props){
-        super (props)
-
-        this.state = {
-            edit: false,
-            text:this.props.text
-        }
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleSubmit(values){
-        console.log("handleSubmit", values)
-        this.props.putText(this.state.text, this.props.id, this.props.username);
-
-        this.setState({
-            edit: !this.state.edit
-        });
-    }
-
-
-    onClick(){
-
-        console.log("onClick", this.state.edit)
-        this.setState({
-            edit: !this.state.edit
-        });
-    }
-
-    handleInputChange(event){
-            // This will update specific key in your form object inside the local state
-        this.setState({
-            form: Object.assign({}, this.state.form, {
-            [event.target.text]: event.target.value,
-        }),
-        });
-    }
-
-
-    render(){
-
-        
-
-        if(this.state.edit){
-
-            return( 
-                <div>
-            <Form model="text" onSubmit={(values) => this.handleSubmit(values)}>
-                <Control.textarea model=".text" id={this.props.id} name="text" style = {{fontSize:"35px"}}
-                    rows={this.props.rows_num} 
-                    className="form-control"  
-                    onChange={event => this.handleInputChange(event)}
-                    defaultValue={this.props.text}/>
-
-                <Button type="submit">save</Button>
-            </Form>
-
-            
-                </div>
-            );        
-            // onChange={this.handleInputChange}                   
-        }               
-        else{
-            return(
-            <div>
-                <div className = 'row'>
-                    <span style = {{fontSize:"45px", fontWeight:"normal"}}>{this.props.text} </span>
-                </div>
-                
-                <div className = 'row'>
-                    <Button onClick={()=>this.onClick()}>edit</Button>
-                </div>
-            </div>
-            );
-        }
-
-    }
-}
-
-export default EditBox;
-
-*/

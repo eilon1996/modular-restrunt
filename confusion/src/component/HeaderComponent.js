@@ -1,14 +1,16 @@
-import React, {Component, useState } from 'react';
+import React, {useState } from 'react';
 import {Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem, Jumbotron,
      Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label} from 'reactstrap'
 // nav link auto maticly impliment the active component and a tag
 import {NavLink} from 'react-router-dom';
 import EditBox from './EditBoxComponent';
 import {Tabs, Tab} from "react-bootstrap" ;
-import initialContent from '../redux/initialContent'
 import {LogoUrl} from '../shared/externalUrl'
 import {useForm} from 'react-hook-form'
+import Loading from './LoadingComponent'
 import {addMyContent} from '../redux/ActionCreators'
+
+import ColorPicker from 'react-color-picker-wheel';
 
 const Header = (props) => {
 
@@ -26,21 +28,23 @@ const Header = (props) => {
     const [loginError, setLoginError] = useState("");
     const [signupError, setSignupError] = useState("");
 
-    // TODO set the signup
-
 
     // setup
+    const {register, errors} = useForm();
     console.log("HeaderComponent: render, myContent", props.myContent)
-    var myContent = null;
-    var title = ""
+    var jumbotronColor = "";
+    var navbarColor = "";
 
     if(props.myContent === null || props.isLoading == true){
-        myContent = initialContent;
+        return <Loading/>;
     } else{
-        myContent = props.myContent;
-    }
 
-    const {register, errors} = useForm();
+        jumbotronColor = "rgba("+props.myContent.color+")";
+        navbarColor = (props.myContent.color.slice(0,3).map(c => c/2));
+        navbarColor.push(props.myContent.color[3]);
+        navbarColor = "rgba("+navbarColor+")";
+
+    }
 
     function handleLogin(event){
         console.log({loginUsername, loginPassword})
@@ -90,9 +94,6 @@ const Header = (props) => {
             setSignupError(tmpError);
         }
         else{
-            const fields = [signupUsername, signupPassword, myContent.title, myContent.titleFontSize,
-                myContent.description , myContent.descriptionFontSize, myContent.color, myContent.dishes];
-
             props.myContent.id = signupUsername;
             props.myContent.password = signupPassword;
             props.signup(props.myContent)
@@ -102,26 +103,33 @@ const Header = (props) => {
         }   
     }
 
-    function changeColor(color) {
+    function changeColor(c) {
+        initColor = c["hex"];
+        var color = Object.values(c["rgb"]);
+        color.push(1);
         console.log(color);  
         props.myContent.color = color;
         props.putContent(props.myContent)
     }
-    
-    //               blue              green             yellow             orange            red             perpel            grey 
-    const colors = [[9, 116, 230, 1], [0, 201 , 52, 1], [224, 254, 32, 1], [255, 127, 0, 1], [255, 0, 0, 1], [255, 13, 188, 1], [110, 110, 110, 1]]
-    const buttons = colors.map(color=> { return(
-        <button className="color-button btn active" style={{backgroundColor:"rgba("+color+")"}} onClick={() => changeColor(color)}></button>
-    )});
 
-    var jumbotronColor = "";
-    var navbarColor = "";
-    if(myContent !== null && myContent !== undefined){
-        jumbotronColor = "rgba("+myContent.color+")";
-        navbarColor = (myContent.color.slice(0,3).map(c => c/2));
-        navbarColor.push(myContent.color[3]);
-        navbarColor = "rgba("+navbarColor+")";
-    }
+    function componentToHex(c) {
+        var hex = c.toString(16);
+        return hex.length == 1 ? "0" + hex : hex;
+      }
+      
+    function rgbToHex(rgb) {
+        const hex = "#" + componentToHex(rgb[0]) + componentToHex(rgb[1]) + componentToHex(rgb[2]);
+        return hex;
+      }
+    var initColor = rgbToHex(props.myContent.color);
+       
+    /* replaced by the color picker 
+        //               blue              green             yellow             orange            red             perpel            grey 
+        const colors = [[9, 116, 230, 1], [0, 201 , 52, 1], [224, 254, 32, 1], [255, 127, 0, 1], [255, 0, 0, 1], [255, 13, 188, 1], [110, 110, 110, 1]]
+        const buttons = colors.map(color=> { return(
+            <button className="color-button btn active" style={{backgroundColor:"rgba("+color+")"}} onClick={() => changeColor(color)}></button>
+        )});
+    */
 
     return(
         <React.Fragment>
@@ -129,8 +137,7 @@ const Header = (props) => {
                 <div className="container">
                     <NavbarToggler onClick={() => setIsNavOpen(!isNavOpen)}/>
                     <NavbarBrand className='mr-auto' href="/">
-                        <img src={LogoUrl} height="30" width="41"
-                            alt={title}/>
+                        <img src={LogoUrl} height="30" width="41"/>
                     </NavbarBrand>
                     <Collapse isOpen={isNavOpen} navbar>
                         <Nav navbar>
@@ -167,11 +174,15 @@ const Header = (props) => {
                 <div className="container">
                     <div className='row row-header'>
                         <div className='col-10 col-md-6'>
-                            <EditBox path={myContent.id} field="title" putContent ={ props.putContent} myContent={myContent}/>
-                            <EditBox path={myContent.id} field ="description" putContent ={ props.putContent} myContent={myContent}/>
-                        </div>
+                          <EditBox path={props.myContent.id} field="title" type="head" id="0" putContent ={ props.putContent} myContent={props.myContent}/>
+                            <EditBox path={props.myContent.id} field ="description"  type="head" id="0" putContent ={ props.putContent} myContent={props.myContent}/>
+                          </div>
                         <div className='col-1 offset-md-5'>
-                            {buttons}
+                        <ColorPicker
+                            onChange={(color => changeColor(color))}
+                            size={270}
+                            initialColor={initColor}
+                        />
                         </div>
                     </div>
                 </div>
