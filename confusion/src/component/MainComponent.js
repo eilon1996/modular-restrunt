@@ -33,7 +33,7 @@ const mapDispatchToProps = dispatch => {
   return{
     putContent: (jsonObject) => dispatch(putContent(jsonObject)),
     signup:(fields_value) => dispatch(signup(fields_value)),
-    postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment)),
+    postComment: (id, rating, author, comment) => dispatch(postComment(id, rating, author, comment)),
     postFeedback: (firstName, lastName, telNum, email, agree, contactType, message) => dispatch(postFeedback(firstName, lastName, telNum, email, agree, contactType, message)),
     
     fetchMyContent: (id) =>  dispatch(fetchMyContent(id)),
@@ -71,14 +71,14 @@ class Main extends Component{
     const DishWithId = ({match}) => {
       return(
         <DishDetail
-          dishId = {parseInt(match.params.dishId,10)}
+          id = {parseInt(match.params.id,10)}
           
           putContent={this.props.putContent} 
           myContent = {this.props.myContent.myContent}
           isLoading = {this.props.myContent.isLoading}
           erMess={this.props.myContent.errMess}
 
-          comments={this.props.comments.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}
+          comments={Object.values(this.props.comments.comments).filter((comment) => comment.dishId === parseInt(match.params.id,10))}
           commentsErrMess={this.props.comments.errMess}
           postComment={this.props.postComment}
       />
@@ -125,7 +125,7 @@ class Main extends Component{
                         putContent={this.props.putContent} 
                     />} />
 
-                  <Route path='/menu/:dishId' component={DishWithId} />
+                  <Route path='/menu/:id' component={DishWithId} />
                   <Route exact path='/contactus' component={() => 
                       <Contact resetFeedbackForm={this.props.resetFeedbackForm}
                       postFeedback={this.props.postFeedback}/>} />

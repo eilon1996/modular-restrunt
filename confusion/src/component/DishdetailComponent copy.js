@@ -146,39 +146,35 @@ class DishDetail extends Component {
         super(props);
         
         this.state={
-            selected:null,
-            labels:""
+            selected:null
         }
         
         this.setSelected = this.setSelected.bind(this);
     }
 
     setSelected = (event) => {
+        
+        this.setState({
+            selected: event
 
-        this.props.myContent["dishes"][this.props.id]["label"] = Object.values(event).map(label => label.label).join();
+        });
+        const labels = Object.values(event).map(label => label.label)
+        const labels_string = labels.join();
+        this.props.myContent["dishes"][this.props.id]["label"] = labels_string;
+        const a = this.props.myContent["dishes"][this.props.id]["label"].split().map(l => ({label:l,value:l}));
         this.props.putContent(this.props.myContent);
     }
     render() {
+        
         if(this.props.myContent !== null && this.state.selected === null){
-            var value = []
-            var l = "";
-            if(this.props.myContent["dishes"][this.props.id]["label"].indexOf("Hot")>-1){
-                value.push({ label: "Hot 🌶", value: "Hot 🌶"});
-            }
-            if(this.props.myContent["dishes"][this.props.id]["label"].indexOf("Vegan") > -1){
-                value.push({ label: "Vegan 🌱", value: "Vegan 🌱"});
-            }
-            if(value.length == 2)
-                l = "Vegan 🌱  Hot 🌶";
             this.setState({
-                selected:value,
-                labels:l
+                selected:this.props.myContent["dishes"][this.props.id]["label"].split().map(l => ({label:l,value:l}))
             });
         }
         
 
         var options = [
-            { label: "Hot 🌶", value: "Hot 🌶"},
+            { label: "Hot 🌶", value: "Hot 🌶", selected:true},
             { label: "Vegan 🌱", value: "Vegan 🌱"}
         ]
 
@@ -210,19 +206,19 @@ class DishDetail extends Component {
                                 <CardImg top src={this.props.myContent.dishes[this.props.id].image} alt={this.props.myContent.dishes[this.props.id].title.text} />
                                 <CardBody>
                                     <CardText>       
-                                    {this.state.labels}
+                                    <pre>{JSON.stringify(this.selected)}</pre>
                                     <MultiSelect
                                         options={options}
                                         value={this.state.selected}
                                         onChange={(event) => this.setSelected(event)}
                                         labelledBy={"Select"}
-                                        selectedValues={this.state.selected}
                                     />
                                         <EditBox field="description" type="dishes" id={this.props.id} putContent ={this.props.putContent} myContent={this.props.myContent}/>
                                     </CardText>
                                 </CardBody>
                             </Card>
                             </FadeTransform>
+                        )
                         </div>
                         <div className="col-12 col-md-5 m-1">
                             <RenderComments comments={this.props.comments} 

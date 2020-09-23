@@ -243,10 +243,10 @@ export const addFeedback = (feedback) => ({
 ///////////comments////////////
 
 //since this is a punc, I need to add the dispatch. So, I'll send the function of a function
-export const postComment = (dishId, rating, author, comment) => (dispatch) => {
+export const postComment = (id, rating, author, comment) => (dispatch) => {
 
   const newComment = {
-      dishId: dishId,
+      dishId: id,
       rating: rating,
       author: author,
       comment: comment

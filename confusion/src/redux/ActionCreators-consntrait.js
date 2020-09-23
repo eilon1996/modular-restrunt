@@ -1,9 +1,9 @@
 
 import * as ActionTypes from './ActionTypes';
 import { baseUrl } from '../shared/baseUrl';
-export const postComment = (dishId, rating, author, comment) => fetch("comments", "", "POST", {
+export const postComment = (id, rating, author, comment) => fetch("comments", "", "POST", {
 
-      dishId: dishId,
+      id: id,
       rating: rating,
       author: author,
       comment: comment,
