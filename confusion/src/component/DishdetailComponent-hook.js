@@ -19,34 +19,32 @@ const minLength = (len) => val => !(val) || (val.length >= len)
 
 function DishDetail(props){
 
-
-    
+    console.log("new render!");
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const [rating, setRating] = useState(5);
     const [author, setAuthor] = useState("");
     const [comment, setComment] = useState("");
 
-    const [selected, setSelected] = useState(null);
-    const [labels, setLabels] = useState("");
 
-    useMemo(() => {
-
+    const [selected, labels] = useMemo(() => {
+        console.log("memo1");
         var value = []
         var l = "";
-        if(props.myContent["dishes"][props.id]["label"].indexOf("Hot")>-1)
-            value.push({ label: "Hot 🌶", value: "Hot 🌶"});
-        
-        if(props.myContent["dishes"][props.id]["label"].indexOf("Vegan") > -1)
-            value.push({ label: "Vegan 🌱", value: "Vegan 🌱"});
-        
-        if(value.length == 2)
-            l = "Vegan 🌱  Hot 🌶";
-            setSelected(value);
-        setLabels(l);
-
+        if(props.myContent !== null){
+            if(props.myContent["dishes"][props.id]["label"].indexOf("Hot")>-1)
+                value.push({ label: "Hot 🌶", value: "Hot 🌶"});
+            
+            if(props.myContent["dishes"][props.id]["label"].indexOf("Vegan") > -1)
+                value.push({ label: "Vegan 🌱", value: "Vegan 🌱"});
+            
+            if(value.length == 2)
+                l = "Vegan 🌱  Hot 🌶";
+        }
+        return [value, l]
     }, [props.myContent])
     
+
     var options = [
         { label: "Hot 🌶", value: "Hot 🌶"},
         { label: "Vegan 🌱", value: "Vegan 🌱"}
@@ -66,8 +64,31 @@ function DishDetail(props){
     }
 
     
+    const comments_text = useMemo(() => {
+        console.log("memo2");
+        if(props.comment === null){
+            return(<div></div>)
+        }
+        props.comments.map((comment)=>{
+           return (
+   
+               <Fade in>
+                   <li className="list-unstyled" key={comment.id}>
+                       <p>
+                           {comment.comment} <br/>
+                           --{comment.author},
+                           {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'})
+                               .format(new Date(Date.parse(comment.date)))}
+                       </p>
+                   </li>
+               </Fade>
+           );
+           //we use here in a script that translate date to readble date
+       });
+   }, [props.comments]);
 
     if (props.isLoading){
+        console.log("loading");
         return (
             <div className="container">
                 <div className="row">
@@ -78,22 +99,7 @@ function DishDetail(props){
     }
     try{
 
-        const comments_text = props.comments.map((comment)=>{
-            return (
-    
-                <Fade in>
-                    <li className="list-unstyled" key={comment.id}>
-                        <p>
-                            {comment.comment} <br/>
-                            --{comment.author},
-                            {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'})
-                                .format(new Date(Date.parse(comment.date)))}
-                        </p>
-                    </li>
-                </Fade>
-            );
-            //we use here in a script that translate date to readble date
-        });
+        console.log("try");
 
         return(
             <div>
@@ -204,6 +210,7 @@ function DishDetail(props){
         );
     }
     catch (e){
+        console.log("catch");
         return (<div>
             {e} 
             {props.errMess}

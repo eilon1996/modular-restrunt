@@ -1,11 +1,13 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { baseUrl } from '../shared/externalUrl';
 import Loading  from './LoadingComponent';
 import { Fade, Stagger } from 'react-animation-components';
+import EditBox from './EditBoxComponent';
+import {useDropzone} from 'react-dropzone'
 
-function RenderLeaders({myContent, isLoading, errMess}){
+function RenderLeaders({myContent, isLoading, errMess, putContent}){
         if (errMess != null && errMess !== undefined && errMess.length > 0){
             return(
             <h4>{errMess}</h4>
@@ -23,20 +25,21 @@ function RenderLeaders({myContent, isLoading, errMess}){
             );
         }
     console.log("about component, mycontent: ", myContent)
-    const leaders = myContent.leaders.map((leader) => {
+    const leaders = myContent.staff.map((employee) => {
         return (
             <Fade in>
-            <div key={leader.id} className="col-12 mt-5">
+            <div key={employee.id} className="col-12 mt-5">
             <Media tag='li'>
                 <Media left middle>
-                    <Media object src={leader.image} alt={leader.title.text}/>
+                    <Media object src={employee.image} alt={employee.title.text}/>
                 </Media>
                 <Media body className="ml-5">
                     <Media heading>
-                        <p>{leader.designation}</p>
+                        <EditBox putContent={putContent} myContent={myContent} type={"staff"} id={employee.id} field={"label"}/>
                     </Media>
-                    <h5>Leader {leader.title.text}</h5>
-                    <p>{leader.description.text}</p>
+                        <EditBox putContent={putContent} myContent={myContent} type={"staff"} id={employee.id} field={"title"}/>
+                    <p>
+                        <EditBox putContent={putContent} myContent={myContent} type={"staff"} id={employee.id} field={"description"}/></p>
                 </Media>
                 
             </Media>
@@ -51,10 +54,12 @@ function RenderLeaders({myContent, isLoading, errMess}){
 
 function About(props) {
 
-   // alert("leaders: "+JSON.stringify(props.leaders));
+     //   const [showForm, setShowForm] = useState(false);
 
     return(
         <div className="container">
+            
+
             <div className="row">
                 <Breadcrumb>
                     <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
@@ -110,11 +115,25 @@ function About(props) {
                 <div className="col-12">
                     <Media list>
                         <Stagger in>
-                            <RenderLeaders myContent={props.myContent}  isLoading={props.isLoading} errMess={props.errMess}/>
+                            <RenderLeaders myContent={props.myContent} putContent={props.putContent} isLoading={props.isLoading} errMess={props.errMess}/>
                
                         </Stagger>
                     </Media>
                 </div>
+            </div>
+            <div className="row" style={{display:"none"}}>
+                <button  /*onClick={setShowForm(true)}*/>add employee</button>
+                <form>
+                    <div className="col-3">
+                    add photo
+                    </div>
+                    <div className='col-9'>
+                        <input name="title" value/>
+                        <textarea name='description'/>
+                    </div>
+                    <button className='btn' style={{background:'grey'}} type="submit">cancel</button>
+                <button className='btn btn-primary' type="submit">add</button>
+                </form>
             </div>
         </div>
     );

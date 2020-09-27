@@ -10,6 +10,47 @@
   min-height:400px;
 }
 
+/* select font style */
+
+@import url('https://fonts.googleapis.com/css?family=Sofia');
+.sofia{ font-family:"Sofia";}
+
+
+@import url('https://fonts.googleapis.com/css?family=Indie+Flower');
+.indieFlower{ font-family:"Indie Flower";}
+
+
+@import url('https://fonts.googleapis.com/css?family=Courgette');
+.courgette{ font-family:"Courgette";}
+
+
+@import url('https://fonts.googleapis.com/css?family=Courier+Prime');
+.courierPrime{ font-family:"Courier Prime";}
+
+
+@import url('https://fonts.googleapis.com/css?family=Secular+One');
+.secularOne{ font-family:"Secular One";}
+
+
+@import url('https://fonts.googleapis.com/css?family=Architects+Daughter');
+.architectsDaughter{ font-family:"Architects Daughter";}
+
+
+@import url('https://fonts.googleapis.com/css?family=Sacramento');
+.sacramento{ font-family:"Sacramento";}
+
+
+
+select *.sofia { /* This, miraculously, styles the '<option class="red"></option>' elements. */
+  background-color:#F00;
+  color:#FFF;
+}
+
+select *.indieFlower {
+  background-color:#F00;
+  color:#000;
+}
+
 
 .footer{
   background-color: #D1C4E9;

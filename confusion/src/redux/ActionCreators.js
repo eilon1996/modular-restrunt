@@ -255,7 +255,7 @@ export const postComment = (id, rating, author, comment) => (dispatch) => {
  //previesdly the id and the date where added in comments.js
   newComment.date = new Date().toISOString();
   
-  return fetch(baseUrl + '/comments'+".json", {
+  return fetch(baseUrl + "/comments.json", {
       method: "POST",
       body: JSON.stringify(newComment),
       headers: {
@@ -278,7 +278,9 @@ export const postComment = (id, rating, author, comment) => (dispatch) => {
     })
   .then(response => response.json())
   .then(response => dispatch(addComment(response)))
-  .catch(error =>  { console.log('post comments', error.message); alert('Your comment could not be posted\nError: '+error.message); });
+  .catch(error =>  { console.log('post comments', error.message);
+   //alert('Your comment could not be posted\nError: '+error.message); 
+});
 };
 
 

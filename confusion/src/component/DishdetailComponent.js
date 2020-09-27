@@ -8,6 +8,7 @@ import { baseUrl } from '../shared/externalUrl';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 import EditBox from './EditBoxComponent';
 import MultiSelect from "react-multi-select-component";
+import Dropzone from 'react-dropzone';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => val => !(val) || (val.length <= len)
@@ -70,8 +71,10 @@ class CommentForm extends Component{
 
     handleSubmit(values){
         this.toggleModal();
-        this.props.postComment(this.props.id, values.rating, values.author, values.comment);
-        alert("current state is: " + JSON.stringify(values));
+        var rating = 5;  // the value didnt change and the initial value is 5
+        if( values.rating)  rating = values.rating
+        this.props.postComment(this.props.id, rating, values.author, values.comment);
+        //alert("current state is: " + JSON.stringify(values));
     }
 
 
@@ -92,8 +95,8 @@ class CommentForm extends Component{
                             
                             <Row className="form-group">
                                 <Col md={{ size: 12 }}>
-                                    <Control.select model=".rating" name="rating"
-                                        value={this.props.rating}>
+                                    <Control.select model=".rating" name="rating" id="rating" 
+                                        value={this.props.rating} onChange={this.handleInputChange}>
                                         <option>5</option>
                                         <option>4</option>
                                         <option>3</option>
@@ -176,12 +179,10 @@ class DishDetail extends Component {
             });
         }
         
-
         var options = [
             { label: "Hot 🌶", value: "Hot 🌶"},
             { label: "Vegan 🌱", value: "Vegan 🌱"}
         ]
-
 
         if (this.props.isLoading){
             return (
@@ -192,9 +193,12 @@ class DishDetail extends Component {
                 </div>
             );
         }
+
         try{
             return(
                 <div className="container">
+
+                    
                     <Breadcrumb>
                         <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
                         <BreadcrumbItem active>{this.props.myContent.dishes[this.props.id].title.text}</BreadcrumbItem>

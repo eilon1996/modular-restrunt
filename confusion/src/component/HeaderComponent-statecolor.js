@@ -1,4 +1,4 @@
-import React, {useState } from 'react';
+import React, {useState, useEffect } from 'react';
 import {Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem, Jumbotron,
      Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label} from 'reactstrap'
 // nav link auto maticly impliment the active component and a tag
@@ -28,18 +28,38 @@ const Header = (props) => {
     const [loginError, setLoginError] = useState("");
     const [signupError, setSignupError] = useState("");
 
+    const [jumbotronColor, setJumbotronColor] = useState(null)
 
+
+    var delay;
+    useEffect(() => {
+        console.log("entered useEffect");
+        if(jumbotronColor === null) return;
+        console.log("entered useEffect", jumbotronColor, props.myContent.color);
+        alert()
+        clearTimeout(delay)
+        
+        delay = setTimeout(() => {
+            
+        console.log("exist useEffect, jumbotronColor", jumbotronColor); 
+        if(props.myContent.color !== jumbotronColor){
+            props.myContent.color = jumbotronColor;
+            props.putContent(props.myContent)
+        }
+        }, 3000)
+
+    }, [jumbotronColor])
     // setup
     const {register, errors} = useForm();
     console.log("HeaderComponent: render, myContent", props.myContent)
-    var jumbotronColor = "";
+  //  var jumbotronColor = "";
     var navbarColor = "";
 
     if(props.myContent === null || props.isLoading == true){
         return <Loading/>;
     } else{
 
-        jumbotronColor = "rgba("+props.myContent.color+")";
+        setJumbotronColor(props.myContent.color);
         navbarColor = (props.myContent.color.slice(0,3).map(c => c/2));
         navbarColor.push(props.myContent.color[3]);
         navbarColor = "rgba("+navbarColor+")";
@@ -104,12 +124,10 @@ const Header = (props) => {
     }
 
     function changeColor(c) {
-        initColor = c["hex"];
         var color = Object.values(c["rgb"]);
         color.push(1);
-        console.log(color);  
-        props.myContent.color = color;
-        props.putContent(props.myContent)
+        console.log("color", color);
+        setJumbotronColor(color);
     }
 
     function componentToHex(c) {
@@ -123,6 +141,7 @@ const Header = (props) => {
       }
     var initColor = rgbToHex(props.myContent.color);
        
+
 
     return(
         <React.Fragment>
@@ -163,14 +182,14 @@ const Header = (props) => {
                     </Collapse>
                 </div>
             </Navbar>
-            <Jumbotron style={{backgroundColor: jumbotronColor}}>
+            <Jumbotron style={{backgroundColor: "rgba("+jumbotronColor+")"}}>
                 <div className="container">
                     <div className='row row-header'>
                         <div className='col-10 col-md-6'>
                           <EditBox path={props.myContent.id} field="title" type="head" id="0" putContent ={ props.putContent} myContent={props.myContent}/>
                             <EditBox path={props.myContent.id} field ="description"  type="head" id="0" putContent ={ props.putContent} myContent={props.myContent}/>
                           </div>
-                        <div className='col-12 col-md-1 offset-md-5'>
+                        <div className='col-12 col-md-3 ml-md-auto'>
                         <ColorPicker
                             onChange={(color => changeColor(color))}
                             size={270}

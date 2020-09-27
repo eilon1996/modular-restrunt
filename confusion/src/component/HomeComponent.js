@@ -66,7 +66,7 @@ function Home(props) {
                     <RenderCard item={props.myContent.thePlace[0]}/>
                 </div>
                 <div className="col-12 col-md m-1">
-                    <RenderCard item={props.myContent.leaders[0]} />
+                    <RenderCard item={props.myContent.staff[0]} />
                 </div>
             </div>
         </div>
