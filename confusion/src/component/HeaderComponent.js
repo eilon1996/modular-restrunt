@@ -1,6 +1,7 @@
-import React, {useState } from 'react';
+import React, {useState, useEffect } from 'react';
+import { useDebounce } from 'use-debounce';
 import {Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem, Jumbotron,
-     Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label} from 'reactstrap'
+     Button, Modal, ModalBody} from 'reactstrap'
 // nav link auto maticly impliment the active component and a tag
 import {NavLink} from 'react-router-dom';
 import EditBox from './EditBoxComponent';
@@ -8,7 +9,7 @@ import {Tabs, Tab} from "react-bootstrap" ;
 import {LogoUrl} from '../shared/externalUrl'
 import {useForm} from 'react-hook-form'
 import Loading from './LoadingComponent'
-import {addMyContent} from '../redux/ActionCreators'
+//import {addMyContent} from '../redux/ActionCreators'
 
 import ColorPicker from 'react-color-picker-wheel';
 
@@ -25,49 +26,61 @@ const Header = (props) => {
     const [signupPassword, setSignupPassword] = useState("");
     const [signupRePassword, setSignupRePassword] = useState("");
 
-    const [loginError, setLoginError] = useState("");
-    const [signupError, setSignupError] = useState("");
+    const [color, setColor] = useState(() => {
+        if(props.myContent){
+            return props.myContent.color
+        }
+        return null;
 
+    });
+    const [debounce] = useDebounce(color, 1000)
+
+    const [loginError, setLoginError] = useState(null);
+    const [signupError, setSignupError] = useState("");
+    var loginBorderColor = null;
+    var signupBorderColor = null;
+    //var loginBorderColor = null;
+    //var loginBorderColor = null;
 
     // setup
     const {register, errors} = useForm();
-    console.log("HeaderComponent: render, myContent", props.myContent)
-    var jumbotronColor = "";
-    var navbarColor = "";
 
-    if(props.myContent === null || props.isLoading == true){
+    useEffect(() => {
+        console.log("color1", color); 
+        if(color && props.myContent.color !== color){
+            console.log("color2", color);  
+            props.myContent.color = color;
+            props.putContent(props.myContent)
+        }
+    }, [debounce])
+    
+
+    if(props.myContent === null || props.isLoading === true){
         return <Loading/>;
-    } else{
-
-        jumbotronColor = "rgba("+props.myContent.color+")";
-        navbarColor = (props.myContent.color.slice(0,3).map(c => c/2));
-        navbarColor.push(props.myContent.color[3]);
-        navbarColor = "rgba("+navbarColor+")";
-
-    }
+    } 
 
     function handleLogin(event){
         console.log({loginUsername, loginPassword})
-        var tmpError = "";
-        setLoginError("");
+        var tmpError = null;
     
         const userContent = Object.values(props.content).filter((user) => user.id === loginUsername)[0];
         if(userContent){
             
             event.preventDefault();
             if(userContent.password === loginPassword){
+                setLoginError(null)
                 props.fetchMyContent(loginUsername)
                 setIsModalOpen(!isModalOpen);
             }
             else{
                 //wrong password
-                tmpError = "wrong password or user name";
+                tmpError = <div style={{color:"red"}}>wrong password or user name</div>;
             }
         }
         else{
             //create new user?
             event.preventDefault();
-            tmpError = "user name not found\nyou can easily creat new account in the sign up";
+            tmpError = <div style={{color:"red"}}>user name not found<br/>you can easily creat new account in the sign up</div>;
         }
     
         if(tmpError !== ""){
@@ -76,24 +89,27 @@ const Header = (props) => {
     
     }
 
+
     function handleSignup(event){
         console.log({signupUsername, signupPassword, signupRePassword})
         var tmpError = "";
-        setSignupError("");
         
         if(signupRePassword !== signupPassword){
-            tmpError = "passwords not match\n";
+            tmpError = <div style={{color:"red"}}>passwords not match</div>
         }
         const userContent = Object.values(props.content).filter((user) => user.id === signupUsername)[0];
-        if(userContent !== null && userContent !== undefined){
-            tmpError += "user name already exist";
-        }
+        if(userContent !== null && userContent !== undefined)
+            tmpError = <div style={{color:"red"}}>user name already exist</div>
+            loginBorderColor = "green";
+        
         
         event.preventDefault();
         if(tmpError !== ""){
             setSignupError(tmpError);
         }
         else{
+            loginBorderColor = null;
+            setSignupError(null);
             props.myContent.id = signupUsername;
             props.myContent.password = signupPassword;
             props.signup(props.myContent)
@@ -103,30 +119,20 @@ const Header = (props) => {
         }   
     }
 
-    function changeColor(c) {
-        initColor = c["hex"];
-        var color = Object.values(c["rgb"]);
-        color.push(1);
-        console.log(color);  
-        props.myContent.color = color;
-        props.putContent(props.myContent)
-    }
-
     function componentToHex(c) {
         var hex = c.toString(16);
-        return hex.length == 1 ? "0" + hex : hex;
+        return hex.length === 1 ? "0" + hex : hex;
       }
       
     function rgbToHex(rgb) {
         const hex = "#" + componentToHex(rgb[0]) + componentToHex(rgb[1]) + componentToHex(rgb[2]);
         return hex;
       }
-    var initColor = rgbToHex(props.myContent.color);
        
 
     return(
-        <React.Fragment>
-            <Navbar dark expand="md" style={{backgroundColor: navbarColor}}>
+        <React.Fragment>                    
+            <Navbar dark expand="md" style={{backgroundColor: "rgba("+[...color.map(c => c/2), 1]+")"}}>
                 <div className="container">
                     <NavbarToggler onClick={() => setIsNavOpen(!isNavOpen)}/>
                     <NavbarBrand className='mr-auto' href="/">
@@ -163,7 +169,7 @@ const Header = (props) => {
                     </Collapse>
                 </div>
             </Navbar>
-            <Jumbotron style={{backgroundColor: jumbotronColor}}>
+            <Jumbotron style={{backgroundColor: "rgba("+[...color, 1]+")"}}>
                 <div className="container">
                     <div className='row row-header'>
                         <div className='col-10 col-md-6'>
@@ -172,9 +178,9 @@ const Header = (props) => {
                           </div>
                         <div className='col-12 col-md-1 offset-md-5'>
                         <ColorPicker
-                            onChange={(color => changeColor(color))}
-                            size={270}
-                            initialColor={initColor}
+                            onChange={(c => setColor(Object.values(c["rgb"])))}
+                            size={240}
+                            initialColor={rgbToHex(color)}
                         />
                         </div>
                     </div>
@@ -188,23 +194,28 @@ const Header = (props) => {
                     activeKey={modalTab}
                     onSelect={(k) => setModalTab(k)}
                     >
-                        <Tab eventKey="login" title="login">
+                        <Tab eventKey="login" title="login" style={{border:"solid green"}}>
                             <form name="login" onSubmit={handleLogin}>
-                                <label className="col-12 col-md-3">user name</label>
-                                <input className="col-12 col-md-9" name="loginUsername" value={loginUsername}
-                                onChange={(event) => setLoginUsername(event.target.value)}/>
-                                <label className="col-12 col-md-3">password</label>
-                                <input className="col-12 col-md-9" type="password" name="loginPassword" value={loginPassword}
-                                 onChange={(event) => setLoginPassword(event.target.value)} 
-                                    ref={register({ required: true })} />
-                                {errors.exampleRequired && <span>This field is required</span>}
-                                <button type="submit" name="submit">login</button>
+                                <label className="col-12 col-md-3" style={{marginTop:"12px", marginBottom:"8px"}}>user name</label>
+                                <input className="col-12 col-md-9" style={{marginTop:"4px", marginBottom:"8px"}} name="loginUsername" value={loginUsername}
+                                 onChange={(event) => setLoginUsername(event.target.value)}
+                                 ref={register({ required: true })}/>
+                                
+                                <label className="col-12 col-md-3" style={{marginTop:"4px", marginBottom:"8px"}}>password</label>
+                                <input className="col-12 col-md-9" style={{marginTop:"4px", marginBottom:"8px"}} type="password" name="loginPassword" value={loginPassword}
+                                onChange={(event) => setLoginPassword(event.target.value)}
+                                ref={register({ required: true })} />
+
+                                {loginError}
+                                <div className=" col-2 ml-auto" style={{marginRight: "8.5px", marginTop:"5px"}}>
+                                    <button type="submit" style={{paddingLeft:10, paddingRight:10, paddingTop:3.5, paddingBottom:3.5}} className="btn btn-primary" name="submit">login</button>
+                                </div>
                             </form>
                         </Tab>
 
                         <Tab eventKey="signUp" title="sign up">
                             <form name="signup" onSubmit={handleSignup}>
-                                <label className="col-12 col-md-3" style={{marginTop:"4px", marginBottom:"8px"}}>user name</label>
+                                <label className="col-12 col-md-3" style={{marginTop:"12px", marginBottom:"8px"}}>user name</label>
                                 <input className="col-12 col-md-9" style={{marginTop:"4px", marginBottom:"8px"}} name="signupUsername" value={signupUsername}
                                  onChange={(event) => setSignupUsername(event.target.value)}/>
                                 
@@ -214,12 +225,14 @@ const Header = (props) => {
                                 ref={register({ required: true })} />
                                 
                                 <label className="col-12 col-md-3" style={{marginTop:"4px", marginBottom:"8px"}}>re-enter password</label>
-                                <input className="col-12 col-md-9" style={{marginTop:"4px", marginBottom:"8px"}} type="password" name="signupRePassword" value={signupRePassword}
+                                <input className="col-12 col-md-9" style={{verticalAlign: "top", marginTop:"10px", marginBottom:"8px"}} type="password" name="signupRePassword" value={signupRePassword}
                                 onChange={(event) => setSignupRePassword(event.target.value)}
                                 ref={register({ required: true })}  />
                                 
-                                {errors.exampleRequired && <span>This field is required</span>}
-                                <button type="submit" name="submit2">signup</button>
+                                {signupError}
+                                <div className=" col-3 ml-auto" style={{marginRight: "8.5px", marginTop:"5px", paddingRight:"0px", alignItems:"right",  justifyContent:"right" }}>
+                                    <button type="submit" style={{paddingLeft:10, paddingRight:10, paddingTop:3.5, paddingBottom:3.5}} className="btn btn-primary mr-auto" name="submit2">sign up</button>
+                                </div>
                             </form>
                         </Tab>
                     </Tabs>

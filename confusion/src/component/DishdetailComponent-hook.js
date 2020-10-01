@@ -1,4 +1,4 @@
-import React, {useState, useMemo, useCallback} from 'react';
+import React, {useState, useMemo, useEffect} from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle} from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Breadcrumb, BreadcrumbItem, Button, Modal, ModalBody, ModalHeader, Label, Col , Row } from 'reactstrap'
@@ -9,6 +9,7 @@ import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 import EditBox from './EditBoxComponent';
 import MultiSelect from "react-multi-select-component";
 import Dropzone from 'react-dropzone';
+import { putContent } from '../redux/ActionCreators';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => val => !(val) || (val.length <= len)
@@ -26,36 +27,32 @@ function DishDetail(props){
     const [author, setAuthor] = useState("");
     const [comment, setComment] = useState("");
 
-
-    const [selected, labels] = useMemo(() => {
-        console.log("memo1");
+    const [selected, setSelected] = useState(() => {
         var value = []
-        var l = "";
         if(props.myContent !== null){
             if(props.myContent["dishes"][props.id]["label"].indexOf("Hot")>-1)
                 value.push({ label: "Hot 🌶", value: "Hot 🌶"});
             
             if(props.myContent["dishes"][props.id]["label"].indexOf("Vegan") > -1)
                 value.push({ label: "Vegan 🌱", value: "Vegan 🌱"});
-            
-            if(value.length == 2)
-                l = "Vegan 🌱  Hot 🌶";
-        }
-        return [value, l]
-    }, [props.myContent])
-    
+        } 
+        return value;
+    })
 
-    var options = [
+    const labels = selected.length == 2 ? <div>Hot 🌶 &amp; Vegan 🌱</div> : null;
+
+    const options = [
         { label: "Hot 🌶", value: "Hot 🌶"},
         { label: "Vegan 🌱", value: "Vegan 🌱"}
     ]
 
-
-
-    function handleSelected(event){
-        props.myContent["dishes"][props.id]["label"] = Object.values(event).map(label => label.label).join();
-        props.putContent(props.myContent);
-    }
+    useEffect(() => {
+        if (props.myContent !== null && selected.map(label => label.label).join() !== props.myContent["dishes"][props.id]["label"]){
+            console.log("selected", selected)
+            props.myContent["dishes"][props.id]["label"] = selected.map(label => label.label).join();
+            props.putContent(props.myContent)
+        }
+    }, [selected])
 
 
     function handleSubmit(values){
@@ -63,30 +60,31 @@ function DishDetail(props){
         props.postComment(props.id, values.rating, values.author, values.comment);
     }
 
-    
-    const comments_text = useMemo(() => {
-        console.log("memo2");
-        if(props.comment === null){
-            return(<div></div>)
-        }
-        props.comments.map((comment)=>{
-           return (
-   
-               <Fade in>
-                   <li className="list-unstyled" key={comment.id}>
-                       <p>
-                           {comment.comment} <br/>
-                           --{comment.author},
-                           {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'})
-                               .format(new Date(Date.parse(comment.date)))}
-                       </p>
-                   </li>
-               </Fade>
-           );
-           //we use here in a script that translate date to readble date
-       });
-   }, [props.comments]);
 
+    const Comments = () => {
+        if(props.comments){
+            return(
+                <Stagger in>{
+                    props.comments.map((comment)=>(
+            
+                        <Fade in>
+                            <li className="list-unstyled" key={comment.id}>
+                                <p>
+                                    {comment.comment} <br/>
+                                    --{comment.author},
+                                    {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'})
+                                        .format(new Date(Date.parse(comment.date)))}
+                                </p>
+                            </li>
+                        </Fade>
+                    ))
+                }</Stagger>
+            )
+        }
+        else 
+            return("loading comments...");
+    }
+   
     if (props.isLoading){
         console.log("loading");
         return (
@@ -125,7 +123,7 @@ function DishDetail(props){
                                 <MultiSelect
                                     options={options}
                                     value={selected}
-                                    onChange={(event) => handleSelected(event)}
+                                    onChange={(event) => setSelected(Object.values(event))}
                                     labelledBy={"Select"}
                                     selectedValues={selected}
                                 />
@@ -139,18 +137,16 @@ function DishDetail(props){
 
                             <h4>comments</h4>
                             <ul className="list-gruop">
-                                <Stagger in>
-                                    {comments_text}
-                                </Stagger>
+                                    <Comments/>
                             </ul> 
                             
                             <div className="row">
-                                    <Button outline onClick={setIsModalOpen(! isModalOpen)} className='ml-auto'>
+                                    <Button outline onClick={() => setIsModalOpen(! isModalOpen)} className='ml-auto'>
                                         <span className='fa fa-pencil fa-lg'></span> Submit Comment
                                     </Button>
                                 </div>
-                                <Modal outline isOpen={isModalOpen} toggle={setIsModalOpen(! isModalOpen)}>
-                                    <ModalHeader toggle={setIsModalOpen(! isModalOpen)}>Submit Comment</ModalHeader>
+                                <Modal outline isOpen={isModalOpen} toggle={() => setIsModalOpen(! isModalOpen)}>
+                                    <ModalHeader toggle={() => setIsModalOpen(! isModalOpen)}>Submit Comment</ModalHeader>
                                     <ModalBody>
 
                                         <LocalForm onSubmit={(values) => handleSubmit(values)}>

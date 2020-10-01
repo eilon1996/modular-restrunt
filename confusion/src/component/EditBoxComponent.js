@@ -1,48 +1,81 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Loading  from './LoadingComponent'
-
+import { useDebounce } from 'use-debounce';
 
 const EditBox = (props) => {
 
-    const [text, setText] = useState(null);
     const [edit, setEdit] = useState(false);
-    const [fontFamily, setFontFamily] = useState(null);
+    const [fontFamily, setFontFamily] = useState(() => {
+        if (props.myContent)
+            return (props.myContent[props.type][props.id][props.field].fontFamily);
+            
+        return null;
+    })
+    const [fontSize, setFontSize] = useState(() => {
+        if (props.myContent){
+            const size = props.myContent[props.type][props.id][props.field].fontSize;
+            if (typeof size == "string" && size.indexOf("px") >-1) 
+                return (size.slice(0, size.length-2)); // to remove the "px" if exist
+            else 
+                return(parseInt(size))
+        }
+        return null;
+    })
+
+    const [debouncedFontSize] = useDebounce(fontSize, 2000);
+
+
+
+    useEffect(() => {
+        if (props.myContent !== null && fontSize != undefined && fontSize !== props.myContent[props.type][props.id][props.field].fontSize){
+            console.log("debounce")
+            props.myContent[props.type][props.id][props.field].fontSize = fontSize;
+            props.putContent(props.myContent);
+        }
+    }, [debouncedFontSize]);
+
     
     if(props.myContent === null || props.myContent === undefined){
         return <Loading/>
     } 
     
-    console.log("EditBox: props.myContent", JSON.stringify(props.myContent), " props.feild_name: ", props.field)
+    console.log("EditBox: props.myContent", props.myContent ? "myContent": "null", " props.feild_name: ", props.field)
 
-    if (text === null){
-        setText(props.myContent[props.type][props.id][props.field].text);
-        setFontFamily(props.myContent[props.type][props.id][props.field].fontFamily);
-    }
     
     //props.field   title/description
     //props.id      0/1/2..
     //props.type    head/dish/
 
-    var fontSize = props.myContent[props.type][props.id][props.field].fontSize;
     var placeHolder=props.type + props.field;
-    var input;
-    if (props.field === "title")
-        input = <input  style={{fontSize:fontSize}} value={text} onChange={(event) => handleChange(event)}
-                        placeholder={placeHolder} className={fontFamily+" col-12"}/>
-    else
-        input = <textarea  style={{fontSize:fontSize}} value={text} onChange={(event) => handleChange(event)}
-                        placeholder={placeHolder} className={fontFamily+" col-12"}/>
 
-    
-    function handleChange(event){        
-        console.log("EditBox: event.value: ", event.target.value);
-        setText(event.target.value);
-        console.log("EditBox: text: ", text);
-    }
+    var parentText = ""; // help to conect ti Input component state with the perent component (EditBox)
+    const Input = () => {
+        const [text, setText] = useState(() => {
+            if (props.myContent)
+                return (props.myContent[props.type][props.id][props.field].text);
+                
+            return null;
+        })
+        useEffect(() => {
+            parentText = text;     
+        }
+        , [text])
+        if(edit){
+            if (props.field === "title")
+                return <input  style={{fontSize:fontSize+"px"}} value={text} onChange={(event) => setText(event.target.value)}
+                                placeholder={placeHolder} className={fontFamily+" col-12"}/>
+            else
+                return <textarea  style={{fontSize:fontSize+"px"}} value={text} onChange={(event) => setText(event.target.value)}
+                                placeholder={placeHolder} className={fontFamily+" col-12"}/>
+        }
+        return <div className={fontFamily+" col-12"} style={{fontSize:fontSize+"px", mb:0}}>{text}</div> 
+        
+    }    
     
   
     function handleSubmit(event){
-        props.myContent[props.type][props.id][props.field].text = text
+        console.log("handleSubmit, parentText", parentText)
+        props.myContent[props.type][props.id][props.field].text = parentText
         props.myContent[props.type][props.id][props.field].fontFamily = fontFamily
         props.putContent(props.myContent);
         setEdit(false)
@@ -54,9 +87,8 @@ const EditBox = (props) => {
         setEdit(true);
     }
 
-
     function handleFontSize(amount){
-        const size = parseInt(fontSize.slice(0, fontSize.length-2))
+        const size = parseInt(fontSize)
         if(size < 8){
             alert("this is the minimum size");
             return;
@@ -77,7 +109,7 @@ const EditBox = (props) => {
         return(
             <div className="row" style={{ padding: "10px", margin:"0px"}}>
                 <form onSubmit={(event)=> handleSubmit(event)}>
-                    {input}
+                    <Input/>
                     <select value={fontFamily} onChange={(event) => setFontFamily(event.target.value)}>
                         <option value="sofia" className="sofia">Sofia</option>
                         <option value="indieFlower" className="indieFlower">Indie Flower</option>
@@ -96,16 +128,16 @@ const EditBox = (props) => {
 
         return(
                 <div className="row"  style={{ padding: "10px", margin:"0px"}}>
-                        <div className={fontFamily+" col-12"} style={{fontSize:fontSize, mb:0}}>{text}</div> 
+                    <Input/>
                         <div className="col-12" >
                             <button className="edit-save btn btn-secondary" 
                                   onClick={()=>handleOnClick()}>edit</button>
                             <button className="edit-save-arrow btn btn-secondary" 
-                                  onClick={()=>handleFontSize(+2)}>
+                                  onClick={()=>setFontSize(fontSize+2)}>
                                 <span className="fa fa-angle-up"></span>
                             </button>
                             <button className="edit-save-arrow btn btn-secondary" 
-                                    onClick={()=>handleFontSize(-2)}>
+                                    onClick={()=>setFontSize(fontSize-2)}>
                                 <span className="fa fa-angle-down"></span>
                             </button>
                         </div>

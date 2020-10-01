@@ -2,7 +2,6 @@ import React from 'react';
 import { Card, CardImg, CardText, CardBody,
     CardTitle, CardSubtitle} from 'reactstrap';
 import Loading  from './LoadingComponent';
-import { baseUrl } from '../shared/externalUrl';
 import { FadeTransform } from 'react-animation-components';
 
 
@@ -29,7 +28,6 @@ function RenderCard({item}) {
             </Card>
         </FadeTransform>
     );
-
 }
 
 function Home(props) {

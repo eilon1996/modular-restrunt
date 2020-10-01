@@ -245,16 +245,17 @@ export const addFeedback = (feedback) => ({
 //since this is a punc, I need to add the dispatch. So, I'll send the function of a function
 export const postComment = (id, rating, author, comment) => (dispatch) => {
 
-  const newComment = {
-      dishId: id,
-      rating: rating,
-      author: author,
-      comment: comment
-  };
+
+  const newComment = 
+  {
+    dishId: id,
+    rating: rating,
+    author: author,
+    comment: comment,
+    date: new Date().toISOString()
+  }
   
- //previesdly the id and the date where added in comments.js
-  newComment.date = new Date().toISOString();
-  
+    // add the comment place and id
   return fetch(baseUrl + "/comments.json", {
       method: "POST",
       body: JSON.stringify(newComment),
@@ -276,10 +277,35 @@ export const postComment = (id, rating, author, comment) => (dispatch) => {
     error => {
           throw error;
     })
+    // add the comment value
+    /*
+  .then( (originResponse) => 
+      fetch(baseUrl + "/comments/"+count+".json", {
+        method: "PATCH",
+        body: JSON.stringify(newCommentContent),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        //related to the backend 
+        credentials: "same-origin"
+    })
+    .then(response => {
+        if (response.ok) {
+          return response;
+        } else {
+          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+          error.response = response;
+          throw error;
+        }
+      },
+      error => {
+            throw error;
+      })
+  )*/
   .then(response => response.json())
   .then(response => dispatch(addComment(response)))
   .catch(error =>  { console.log('post comments', error.message);
-   //alert('Your comment could not be posted\nError: '+error.message); 
+   alert('Your comment could not be posted\nError: '+error.message); 
 });
 };
 

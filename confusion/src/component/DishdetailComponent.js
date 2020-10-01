@@ -73,6 +73,8 @@ class CommentForm extends Component{
         this.toggleModal();
         var rating = 5;  // the value didnt change and the initial value is 5
         if( values.rating)  rating = values.rating
+
+
         this.props.postComment(this.props.id, rating, values.author, values.comment);
         //alert("current state is: " + JSON.stringify(values));
     }
