@@ -62,7 +62,7 @@ const Header = (props) => {
     
 
     if(myContent === null || isLoading === true){
-        return <Loading/>;
+        return null;
     } 
 
     function handleLogin(event){

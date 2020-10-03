@@ -113,13 +113,15 @@ const Menu = (props) => {
                     <div className="row">
                         {myContent.dishes.map((dish) => (
                             <Card className="col-12 col-md-5 m-1" style={{ padding: "0px" }} key={dish.id}>
-                                <Link to={`/menu/${dish.id}`}>
+                                <a href={`/menu/${dish.id}`}>
                                     <CardImg width="100%" src={dish.image} alt={dish.title.text} />
-                                    <CardImgOverlay>
-                                       <div> {dish.title.text}</div>
+                                    </a>
+                                    <CardImgOverlay style={{display:"table"}}>
+                                       <a href={`/menu/${dish.id}`}> {dish.title.text}</a>
+                                    </CardImgOverlay>
+                                    <CardImgOverlay style={{display:"table", marginLeft:"auto"}}>
                                        <button className="btn btn-default" onClick={() => deleteDish(dish.id)} style={{ marginLeft: "auto" }}><span className="fa fa-times"></span></button>
                                     </CardImgOverlay>
-                                </Link>
                             </Card>
                         ))}
                         <AddDish />
