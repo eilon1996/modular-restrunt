@@ -7,7 +7,7 @@ export const MyContent = (state = {
                             }, action) => {
     switch (action.type) {
     case ActionTypes.ADD_MYCONTENT:
-    console.log("myContent.js: type: " +(action.type)+ " payload: "+JSON.stringify(action.payload));
+    console.log("myContent.js: type: " +(action.type));
     return {...state, isLoading:false, errMess:null, myContent: action.payload}
 
     case ActionTypes.MYCONTENT_LOADING:

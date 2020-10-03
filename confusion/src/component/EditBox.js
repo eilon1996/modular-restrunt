@@ -1,19 +1,23 @@
 import React, {useState, useEffect} from 'react';
-import Loading  from './LoadingComponent'
+import Loading  from './Loading'
 import { useDebounce } from 'use-debounce';
+import {useSelector, useDispatch} from 'react-redux';
+import {putContent} from '../redux/ActionCreators'
 
 const EditBox = (props) => {
 
+    const {myContent, isLoading} = useSelector(store => store.myContent);
+    const dispatch = useDispatch();
     const [edit, setEdit] = useState(false);
     const [fontFamily, setFontFamily] = useState(() => {
-        if (props.myContent)
-            return (props.myContent[props.type][props.id][props.field].fontFamily);
+        if (myContent)
+            return (myContent[props.type][props.id][props.field].fontFamily);
             
         return null;
     })
     const [fontSize, setFontSize] = useState(() => {
-        if (props.myContent){
-            const size = props.myContent[props.type][props.id][props.field].fontSize;
+        if (myContent){
+            const size = myContent[props.type][props.id][props.field].fontSize;
             if (typeof size == "string" && size.indexOf("px") >-1) 
                 return (size.slice(0, size.length-2)); // to remove the "px" if exist
             else 
@@ -27,19 +31,19 @@ const EditBox = (props) => {
 
 
     useEffect(() => {
-        if (props.myContent !== null && fontSize != undefined && fontSize !== props.myContent[props.type][props.id][props.field].fontSize){
+        if (myContent !== null && fontSize != undefined && fontSize !== myContent[props.type][props.id][props.field].fontSize){
             console.log("debounce")
-            props.myContent[props.type][props.id][props.field].fontSize = fontSize;
-            props.putContent(props.myContent);
+            myContent[props.type][props.id][props.field].fontSize = fontSize;
+            dispatch(putContent(myContent));
         }
     }, [debouncedFontSize]);
 
     
-    if(props.myContent === null || props.myContent === undefined){
+    if(myContent === null || myContent === undefined){
         return <Loading/>
     } 
     
-    console.log("EditBox: props.myContent", props.myContent ? "myContent": "null", " props.feild_name: ", props.field)
+    console.log("EditBox: myContent", myContent ? "myContent": "null", " props.feild_name: ", props.field)
 
     
     //props.field   title/description
@@ -51,8 +55,8 @@ const EditBox = (props) => {
     var parentText = ""; // help to conect ti Input component state with the perent component (EditBox)
     const Input = () => {
         const [text, setText] = useState(() => {
-            if (props.myContent)
-                return (props.myContent[props.type][props.id][props.field].text);
+            if (myContent)
+                return (myContent[props.type][props.id][props.field].text);
                 
             return null;
         })
@@ -75,9 +79,9 @@ const EditBox = (props) => {
   
     function handleSubmit(event){
         console.log("handleSubmit, parentText", parentText)
-        props.myContent[props.type][props.id][props.field].text = parentText
-        props.myContent[props.type][props.id][props.field].fontFamily = fontFamily
-        props.putContent(props.myContent);
+        myContent[props.type][props.id][props.field].text = parentText
+        myContent[props.type][props.id][props.field].fontFamily = fontFamily
+        dispatch(putContent(myContent));
         setEdit(false)
         event.preventDefault();
     }
@@ -99,8 +103,8 @@ const EditBox = (props) => {
 
         const new_size = String(size + amount) + "px";
 
-        props.myContent[props.type][props.id][props.field].fontSize = new_size;
-        props.putContent(props.myContent);
+        myContent[props.type][props.id][props.field].fontSize = new_size;
+        dispatch(putContent(myContent));
     }
 
 

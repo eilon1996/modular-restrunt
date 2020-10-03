@@ -50,8 +50,10 @@ export const signup = (jsonObject) => (dispatch) => {
 
 export const putContent = (jsonObject) => (dispatch) => {
 
-
   console.log("ActionCreator-putcontent", jsonObject);
+
+  addMyContent(jsonObject);
+  if(jsonObject.id === "0")  return; // user 0 dont need to update the server
 
   return fetch(baseUrl + '/content/'+jsonObject.id+".json", {
       method: "PATCH",
@@ -73,8 +75,8 @@ export const putContent = (jsonObject) => (dispatch) => {
     error => {
           throw error;
     })
-  .then(response => response.json())
-  .then(response => {dispatch(addMyContent(response));  })
+  //.then(response => response.json())
+  //.then(response => {dispatch(addMyContent(response));  })
   .catch(error =>  { console.log('submmit content', error.message);
    alert('Your content could not be submited\nError: '+error.message); });
 };

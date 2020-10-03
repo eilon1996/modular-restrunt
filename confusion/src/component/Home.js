@@ -1,8 +1,10 @@
 import React from 'react';
 import { Card, CardImg, CardText, CardBody,
     CardTitle, CardSubtitle} from 'reactstrap';
-import Loading  from './LoadingComponent';
+import Loading  from './Loading';
 import { FadeTransform } from 'react-animation-components';
+import {useSelector, useDispatch} from 'react-redux';
+
 
 
 function RenderCard({item}) {
@@ -32,7 +34,10 @@ function RenderCard({item}) {
 
 function Home(props) {
 
-    if(props.isLoading){
+    
+    const {myContent, isLoading, errMess} = useSelector(store => store.myContent);
+
+    if(isLoading){
         
     return(
         <div className="container">
@@ -50,21 +55,21 @@ function Home(props) {
         </div>
         );
     }
-    if(props.errMess !== null && props.errMess !== undefined){
-        return (<div>{props.errMess}</div>)
+    if(errMess !== null && errMess !== undefined){
+        return (<div>{errMess}</div>)
     }
 
     return(
         <div className="container">
             <div className="row align-items-start">
                 <div className="col-12 col-md m-1">
-                    <RenderCard item={props.myContent.dishes[0]}/>
+                    <RenderCard item={myContent.dishes[0]}/>
                 </div>
                 <div className="col-12 col-md m-1">
-                    <RenderCard item={props.myContent.thePlace[0]}/>
+                    <RenderCard item={myContent.thePlace[0]}/>
                 </div>
                 <div className="col-12 col-md m-1">
-                    <RenderCard item={props.myContent.staff[0]} />
+                    <RenderCard item={myContent.staff[0]} />
                 </div>
             </div>
         </div>

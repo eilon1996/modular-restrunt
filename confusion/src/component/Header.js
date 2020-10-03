@@ -4,17 +4,23 @@ import {Navbar, NavbarBrand, Nav, NavbarToggler, Collapse, NavItem, Jumbotron,
      Button, Modal, ModalBody} from 'reactstrap'
 // nav link auto maticly impliment the active component and a tag
 import {NavLink} from 'react-router-dom';
-import EditBox from './EditBoxComponent';
+import EditBox from './EditBox';
 import {Tabs, Tab} from "react-bootstrap" ;
 import {LogoUrl} from '../shared/externalUrl'
 import {useForm} from 'react-hook-form'
-import Loading from './LoadingComponent'
+import Loading from './Loading'
 //import {addMyContent} from '../redux/ActionCreators'
+import {useSelector, useDispatch} from 'react-redux';
+import {putContent, signup, fetchMyContent} from '../redux/ActionCreators'
 
 import ColorPicker from 'react-color-picker-wheel';
 
 const Header = (props) => {
 
+    
+    const [{myContent, isLoading}, {content}] = useSelector(store => [store.myContent, store.content]);
+    const dispatch = useDispatch();
+    
     const [isNavOpen, setIsNavOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalTab, setModalTab] = useState("login");
@@ -27,8 +33,8 @@ const Header = (props) => {
     const [signupRePassword, setSignupRePassword] = useState("");
 
     const [color, setColor] = useState(() => {
-        if(props.myContent){
-            return props.myContent.color
+        if(myContent){
+            return myContent.color
         }
         return null;
 
@@ -47,15 +53,15 @@ const Header = (props) => {
 
     useEffect(() => {
         console.log("color1", color); 
-        if(color && props.myContent.color !== color){
+        if(color && myContent.color !== color){
             console.log("color2", color);  
-            props.myContent.color = color;
-            props.putContent(props.myContent)
+            myContent.color = color;
+            dispatch(putContent(myContent))
         }
     }, [debounce])
     
 
-    if(props.myContent === null || props.isLoading === true){
+    if(myContent === null || isLoading === true){
         return <Loading/>;
     } 
 
@@ -63,13 +69,13 @@ const Header = (props) => {
         console.log({loginUsername, loginPassword})
         var tmpError = null;
     
-        const userContent = Object.values(props.content).filter((user) => user.id === loginUsername)[0];
+        const userContent = Object.values(content).filter((user) => user.id === loginUsername)[0];
         if(userContent){
             
             event.preventDefault();
             if(userContent.password === loginPassword){
                 setLoginError(null)
-                props.fetchMyContent(loginUsername)
+                dispatch(fetchMyContent(loginUsername))
                 setIsModalOpen(!isModalOpen);
             }
             else{
@@ -97,7 +103,7 @@ const Header = (props) => {
         if(signupRePassword !== signupPassword){
             tmpError = <div style={{color:"red"}}>passwords not match</div>
         }
-        const userContent = Object.values(props.content).filter((user) => user.id === signupUsername)[0];
+        const userContent = Object.values(content).filter((user) => user.id === signupUsername)[0];
         if(userContent !== null && userContent !== undefined)
             tmpError = <div style={{color:"red"}}>user name already exist</div>
             loginBorderColor = "green";
@@ -110,9 +116,9 @@ const Header = (props) => {
         else{
             loginBorderColor = null;
             setSignupError(null);
-            props.myContent.id = signupUsername;
-            props.myContent.password = signupPassword;
-            props.signup(props.myContent)
+            myContent.id = signupUsername;
+            myContent.password = signupPassword;
+            dispatch(signup(myContent))
 
 
             //intial user 0
@@ -171,17 +177,20 @@ const Header = (props) => {
             </Navbar>
             <Jumbotron style={{backgroundColor: "rgba("+[...color, 1]+")"}}>
                 <div className="container">
-                    <div className='row row-header'>
+                    <div className='row'>
+                        <h1 style={{margin: "auto"}}>Design Your Restaurant</h1>
+                    </div>
+                    <div className='row'>
                         <div className='col-10 col-md-6'>
-                          <EditBox path={props.myContent.id} field="title" type="head" id="0" putContent ={ props.putContent} myContent={props.myContent}/>
-                            <EditBox path={props.myContent.id} field ="description"  type="head" id="0" putContent ={ props.putContent} myContent={props.myContent}/>
+                          <EditBox path={myContent.id} field="title" type="head" id="0"/>
+                            <EditBox path={myContent.id} field ="description"  type="head" id="0"/>
                           </div>
-                        <div className='col-12 col-md-1 offset-md-5'>
-                        <ColorPicker
-                            onChange={(c => setColor(Object.values(c["rgb"])))}
-                            size={240}
-                            initialColor={rgbToHex(color)}
-                        />
+                          <div className="div-ColorPicker" style={{marginLeft:"auto"}}>
+                            <ColorPicker
+                                onChange={(c => setColor(Object.values(c["rgb"])))}
+                                size={240}
+                                initialColor={rgbToHex(color)}
+                             />
                         </div>
                     </div>
                 </div>

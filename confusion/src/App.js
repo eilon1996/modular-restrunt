@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // the next comment allow the compiler to ignore the problem
-import Main from './component/MainComponent';
+import Main from './component/Main';
 import './App.css';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';

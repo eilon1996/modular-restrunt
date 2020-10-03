@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 // the next comment allow the compiler to ignore the problem
 // eslint-disable-next-line
-import Menu from './MenuComponent';
-import Contact from './ContactComponent';
-import About from './AboutComponent';
-import Home from './HomeComponent';
-import DishDetail from './DishdetailComponent-hook';
-import Header from './HeaderComponent';
-import Footer from './FooterComponent';
+import Menu from './Menu';
+import Contact from './Contact';
+import About from './About';
+import Home from './Home';
+import DishDetail from './Dishdetail';
+import Header from './Header';
+import Footer from './Footer';
 import {Switch, Route, Redirect} from 'react-router-dom';
 import { connect } from 'react-redux'
 import { actions } from 'react-redux-form';
@@ -61,9 +61,6 @@ class Main extends Component{
       console.log("MainComponent:HomePage");
       return(          
         <Home 
-          isLoading = {this.props.myContent.isLoading}
-          myContent = {this.props.myContent.myContent}
-          errMess={this.props.myContent.errMess}
         />
       );
     }
@@ -72,11 +69,6 @@ class Main extends Component{
       return(
         <DishDetail
           id = {parseInt(match.params.id,10)}
-          
-          putContent={this.props.putContent} 
-          myContent = {this.props.myContent.myContent}
-          isLoading = {this.props.myContent.isLoading}
-          erMess={this.props.myContent.errMess}
 
           comments={Object.values(this.props.comments.comments).filter((comment) => comment.dishId === parseInt(match.params.id,10))}
           commentsErrMess={this.props.comments.errMess}
@@ -88,20 +80,7 @@ class Main extends Component{
     const HeaderPart = () => {
       console.log("MainComponent:HeaderPart ",this.props.content);
       return(
-        <Header 
-        
-        putContent={this.props.putContent} 
-        signup={this.props.signup} 
-        
-        isLoading = {this.props.myContent.isLoading}
-        myContent = {this.props.myContent.myContent}
-        fetchMyContent = {this.props.fetchMyContent}
-        
-        content = {this.props.content.content}
-        contentLoading = {this.props.content.isLoading}
-        contentErrMess = {this.props.content.errMess}
-
-      />
+        <Header content={this.props.content.content}/>
       );
     };
 
@@ -113,17 +92,9 @@ class Main extends Component{
               <Switch location={this.props.location}>
                   <Route path='/home' component={HomePage} />
                   <Route exact path='/aboutus' component={() => 
-                      <About myContent={this.props.myContent.myContent} 
-                      isLoading={this.props.myContent.isLoading}
-                      errMess={this.props.myContent.errMess}
-                      putContent={this.props.putContent} 
-                            />} />
+                      <About/>} />
                   <Route exact path='/menu' component={() => 
-                    <Menu myContent={this.props.myContent.myContent} 
-                        isLoading={this.props.myContent.isLoading}
-                        errMess={this.props.myContent.errMess}
-                        putContent={this.props.putContent} 
-                    />} />
+                    <Menu />} />
 
                   <Route path='/menu/:id' component={DishWithId} />
                   <Route exact path='/contactus' component={() => 

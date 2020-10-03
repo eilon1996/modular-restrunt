@@ -1,14 +1,33 @@
-.row-header{
-  margin:0px auto;
-  padding:0px auto;
+
+/*****HEADER*****/
+
+.navbar-dark {
 }
 
-.row-content {
-  margin:0px auto;
-  padding: 50px 0px 50px 0px;
-  border-bottom: 1px ridge;
-  min-height:400px;
+.navbar-light {
 }
+
+
+.jumbotron {
+  padding:40px 30px ;
+  margin:0px 0px 30px 0px;
+  color: white;
+}
+
+.container{
+  padding: 0px;
+}
+
+.row{
+  padding: 0px;
+  margin:0px;
+}
+
+.div-colorpicker {
+    padding-left: "50px";
+    margin-left: "auto";
+}
+
 
 /* select font style */
 
@@ -41,25 +60,7 @@
 
 
 
-select *.sofia { /* This, miraculously, styles the '<option class="red"></option>' elements. */
-  background-color:#F00;
-  color:#FFF;
-}
-
-select *.indieFlower {
-  background-color:#F00;
-  color:#000;
-}
-
-
 .footer{
-  background-color: #D1C4E9;
-  margin:0px auto;
-  padding: 20px 0px 20px 0px;
-}
-
-.color{
-  background-color: #d0e9c4;
   margin:0px auto;
   padding: 20px 0px 20px 0px;
 }
@@ -85,26 +86,12 @@ select *.indieFlower {
   margin: 2px;
 }
 
-.jumbotron {
-  padding:70px 30px 70px 30px;
-  margin:0px auto;
-  background: #9575CD ;
-  color:floralwhite;
-}
-
 address{
   font-size:80%;
   margin:0px;
   color:#0f0f0f;
 }
 
-.navbar-dark {
-  background-color: #512DA8;
-}
-
-.navbar-light {
-  background-color: #b299ee;
-}
 
 /*///////////// for the page sliding ///////////////*/
 
