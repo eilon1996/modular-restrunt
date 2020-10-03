@@ -137,6 +137,7 @@ const Header = (props) => {
        
 
     return(
+        myContent?
         <React.Fragment>                    
             <Navbar dark expand="md" style={{backgroundColor: "rgba("+[...color.map(c => c/2), 1]+")"}}>
                 <div className="container">
@@ -248,6 +249,8 @@ const Header = (props) => {
                 </ModalBody>
             </Modal>
         </React.Fragment>
+        
+        :null
     );
    
 
