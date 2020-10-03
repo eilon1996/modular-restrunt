@@ -69,10 +69,6 @@ class Main extends Component{
       return(
         <DishDetail
           id = {parseInt(match.params.id,10)}
-
-          comments={Object.values(this.props.comments.comments).filter((comment) => comment.dishId === parseInt(match.params.id,10))}
-          commentsErrMess={this.props.comments.errMess}
-          postComment={this.props.postComment}
       />
       );
     };
@@ -93,8 +89,7 @@ class Main extends Component{
                   <Route path='/home' component={HomePage} />
                   <Route exact path='/aboutus' component={() => 
                       <About/>} />
-                  <Route exact path='/menu' component={() => 
-                    <Menu />} />
+                  <Route exact path='/menu' component={() => <Menu />} />
 
                   <Route path='/menu/:id' component={DishWithId} />
                   <Route exact path='/contactus' component={() => 

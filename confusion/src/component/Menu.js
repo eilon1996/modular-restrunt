@@ -33,6 +33,7 @@ const Menu = (props) => {
             newDish.label = selected.map(label => label.label).join();
             newDish.description.text = description;
             newDish.id = amount;
+            newDish.comments=null;
             myContent.dishes[amount] = newDish;
             setShowForm(false);
             dispatch(putContent(myContent));
@@ -113,11 +114,11 @@ const Menu = (props) => {
                     <div className="row">
                         {myContent.dishes.map((dish) => (
                             <Card className="col-12 col-md-5 m-1" style={{ padding: "0px" }} key={dish.id}>
-                                <a href={`/menu/${dish.id}`}>
+                                <Link to={`/menu/${dish.id}`}>
                                     <CardImg width="100%" src={dish.image} alt={dish.title.text} />
-                                    </a>
+                                    </Link>
                                     <CardImgOverlay style={{display:"table"}}>
-                                       <a href={`/menu/${dish.id}`}> {dish.title.text}</a>
+                                       <Link href={`/menu/${dish.id}`}> {dish.title.text}</Link>
                                     </CardImgOverlay>
                                     <CardImgOverlay style={{display:"table", marginLeft:"auto"}}>
                                        <button className="btn btn-default" onClick={() => deleteDish(dish.id)} style={{ marginLeft: "auto" }}><span className="fa fa-times"></span></button>
