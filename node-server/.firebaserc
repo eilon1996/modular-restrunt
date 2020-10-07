@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "modolar-restrunt",
+    "staging": "modolar-restrunt"
+  }
+}
