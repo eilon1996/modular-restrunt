@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useSelector } from 'react';
 // the next comment allow the compiler to ignore the problem
 // eslint-disable-next-line
 import Menu from './Menu';
@@ -45,7 +45,7 @@ function Main(props){
   }, [])
     
     const HeaderPart = () => {
-      return(<Header/>);
+      return(<Header />);
     };
 
     return(
@@ -65,7 +65,7 @@ function Main(props){
               </Switch>
             </CSSTransition>
           </TransitionGroup>
-        <Footer/>
+        <Footer />
         </div>
   );
   

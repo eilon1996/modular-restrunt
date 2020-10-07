@@ -118,7 +118,7 @@ const Menu = (props) => {
                                     <CardImg width="100%" src={dish.image} alt={dish.title.text} />
                                     </Link>
                                     <CardImgOverlay style={{display:"table"}}>
-                                       <Link href={`/menu/${dish.id}`}> {dish.title.text}</Link>
+                                       <Link href={`/menu/${dish.id}`}> <span style={{color:"black", fontFamily:dish.title.fontFamily, fontSize:dish.title.fontSize}}>{dish.title.text}</span></Link>
                                     </CardImgOverlay>
                                     <CardImgOverlay style={{display:"table", marginLeft:"auto"}}>
                                        <button className="btn btn-default" onClick={() => deleteDish(dish.id)} style={{ marginLeft: "auto" }}><span className="fa fa-times"></span></button>

@@ -24,12 +24,11 @@ function DishDetail(props) {
     const { myContent, isLoading, errMess } = useSelector(store => store.myContent);
     const dispatch = useDispatch()
 
-    console.log("new render!");
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [render, setRender] = useState(0);
 
-    const [rating, setRating] = useState(5);
-    const [author, setAuthor] = useState("");
-    const [comment, setComment] = useState("");
+
+
+    const Dish = () => {
 
     const [selected, setSelected] = useState(() => {
         var value = []
@@ -58,21 +57,32 @@ function DishDetail(props) {
         }
     }, [selected])
 
+        return (
 
-    function handleSubmit(values) {
-        setIsModalOpen(!isModalOpen);
-        const amount = myContent["dishes"][props.id]["comments"].length;
-        let newComment = { "author": values.author, "comment": values.comment, "date": new Date().toISOString(), "id": amount, "rating": values.rating }
-        myContent["dishes"][props.id].comments[amount] = newComment;
-        dispatch(putContent(myContent));
-        //event.preventDefault();
-        //props.postComment(props.id, values.rating, values.author, values.comment);
+            <FadeTransform in transformProps={{ exitTransform: 'scale(0.5) translateY(-50%)' }}>
+                <Card>
+                    <CardImg top src={myContent.dishes[props.id].image} alt={myContent.dishes[props.id].title.text} />
+                    <CardBody>
+                        <CardText>
+                            {labels}
+                            <MultiSelect
+                                options={options}
+                                value={selected}
+                                onChange={(event) => setSelected(Object.values(event))}
+                                labelledBy={"Select"}
+                                selectedValues={selected}
+                            />
+                            <EditBox field="description" type="dishes" id={props.id} />
+                        </CardText>
+                    </CardBody>
+                </Card>
+            </FadeTransform>
+        );
     }
-
 
     const Comments = () => {
 
-        return(
+        return (
             myContent ?
                 myContent.dishes[props.id].comments ?
                     <Stagger in>{
@@ -94,50 +104,99 @@ function DishDetail(props) {
                 :
                 <Stagger in><li><p>loading comments...</p></li></Stagger>
         )
+    }
 
-        /*
-        if(myContent){
-            return(
-                <Stagger in>{
-                    myContent.dishes[props.id].comments.map((comment)=>(
-                        <Fade in>
-                            <li className="list-unstyled" key={comment.id}>
-                                <p>
-                                    {comment.comment} <br/>
-                                    --{comment.author},
-                                    {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'})
-                                        .format(new Date(Date.parse(comment.date)))}
-                                </p>
-                            </li>
-                        </Fade>
-                    ))
-                }</Stagger>
-            )
+
+    const AddComment = () => {
+
+        const [isModalOpen, setIsModalOpen] = useState(false);
+
+        const [rating, setRating] = useState(5);
+        const [author, setAuthor] = useState("");
+        const [comment, setComment] = useState("");
+
+
+
+        function handleSubmit(values) {
+            setIsModalOpen(!isModalOpen);
+            const amount = myContent["dishes"][props.id]["comments"].length;
+            let newComment = { "author": values.author, "comment": values.comment, "date": new Date().toISOString(), "id": amount, "rating": values.rating }
+            myContent["dishes"][props.id].comments[amount] = newComment;
+            dispatch(putContent(myContent));
+            setRender(render + 1);
         }
-        else 
-            return("loading comments...");
-            */
-    }
 
-    if (isLoading) {
-        console.log("loading");
-        return (
-            <div className="container">
-                <div className="row">
-                    <Loading />
-                </div>
-            </div>
-        );
-    }
-    try {
-
-        console.log("try");
 
         return (
             <div>
-                <div className="container">
+                <Button outline onClick={() => setIsModalOpen(!isModalOpen)} className='ml-auto'>
+                    <span className='fa fa-pencil fa-lg'></span> Submit Comment
+            </Button>
+                <Modal outline isOpen={isModalOpen} toggle={() => setIsModalOpen(!isModalOpen)}>
+                    <ModalHeader toggle={() => setIsModalOpen(!isModalOpen)}>Submit Comment</ModalHeader>
+                    <ModalBody>
 
+                        <LocalForm onSubmit={(values) => handleSubmit(values)}>
 
+                            <Row className="form-group">
+                                <Col md={{ size: 12 }}>
+                                    <Control.select model=".rating" name="rating"
+                                        value={rating} onChange={(event) => setRating(event.target.value)}>
+                                        <option>5</option>
+                                        <option>4</option>
+                                        <option>3</option>
+                                        <option>2</option>
+                                        <option>1</option>
+                                    </Control.select>
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="author" md={{ size: 12 }}>Your Name</Label>
+                                <Col md={{ size: 12 }}>
+                                    <Control.text model=".author" id="author" name="author" placeholder="Your Name"
+                                        className="form-control" onChange={(event) => setAuthor(event.target.value)}
+                                        validators={{ required, minLength: minLength(3), maxLength: maxLength(15) }}
+                                        value={author} />
+                                    <Errors className="text-danger" model=".author"
+                                        show="touched"
+                                        messages={{
+                                            required: 'Requierd ',
+                                            minLength: 'Must be greater than 2 characters ',
+                                            maxLength: 'Must be 15 characters or less '
+                                        }}>
+                                    </Errors>
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Label htmlFor="comment" md={{ size: 12 }}>Comment</Label>
+                                <Col md={{ size: 12 }}>
+                                    <Control.textarea model=".comment" id="comment" name="comment"
+                                        rows="6" className="form-control" value={comment}
+                                        onChange={(event) => setComment(event.target.value)} />
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Col md={{ size: 12 }}>
+                                    <Button type="submit" color="primary">
+                                        Submit
+                            </Button>
+                                </Col>
+                            </Row>
+                        </LocalForm>
+                    </ModalBody>
+                </Modal>
+            </div>
+        );
+
+    }
+
+    console.log("try");
+
+    return (
+        <div className="container">
+            {isLoading ?  <div className="row"> <Loading /></div> :
+            
+                <div>
                     <Breadcrumb>
                         <BreadcrumbItem><Link to="/menu">Menu</Link></BreadcrumbItem>
                         <BreadcrumbItem active>{myContent.dishes[props.id].title.text}</BreadcrumbItem>
@@ -148,104 +207,24 @@ function DishDetail(props) {
                     </div>
                     <div className="row">
                         <div className="col-12 col-md-5 m-1">
-                            <FadeTransform in transformProps={{ exitTransform: 'scale(0.5) translateY(-50%)' }}>
-                                <Card>
-                                    <CardImg top src={myContent.dishes[props.id].image} alt={myContent.dishes[props.id].title.text} />
-                                    <CardBody>
-                                        <CardText>
-                                            {labels}
-                                            <MultiSelect
-                                                options={options}
-                                                value={selected}
-                                                onChange={(event) => setSelected(Object.values(event))}
-                                                labelledBy={"Select"}
-                                                selectedValues={selected}
-                                            />
-                                            <EditBox field="description" type="dishes" id={props.id} />
-                                        </CardText>
-                                    </CardBody>
-                                </Card>
-                            </FadeTransform>
+                            <Dish/>
                         </div>
-                        <div className="col-12 col-md-5 m-1">
 
+                        <div className="col-12 col-md-5 m-1">
                             <h4>comments</h4>
                             <ul className="list-gruop">
                                 <Comments />
                             </ul>
 
                             <div className="row">
-                                <Button outline onClick={() => setIsModalOpen(!isModalOpen)} className='ml-auto'>
-                                    <span className='fa fa-pencil fa-lg'></span> Submit Comment
-                                    </Button>
+                                <AddComment />
                             </div>
-                            <Modal outline isOpen={isModalOpen} toggle={() => setIsModalOpen(!isModalOpen)}>
-                                <ModalHeader toggle={() => setIsModalOpen(!isModalOpen)}>Submit Comment</ModalHeader>
-                                <ModalBody>
-
-                                    <LocalForm onSubmit={(values) => handleSubmit(values)}>
-
-                                        <Row className="form-group">
-                                            <Col md={{ size: 12 }}>
-                                                <Control.select model=".rating" name="rating"
-                                                    value={rating} onChange={(event) => setRating(event.target.value)}>
-                                                    <option>5</option>
-                                                    <option>4</option>
-                                                    <option>3</option>
-                                                    <option>2</option>
-                                                    <option>1</option>
-                                                </Control.select>
-                                            </Col>
-                                        </Row>
-                                        <Row className="form-group">
-                                            <Label htmlFor="author" md={{ size: 12 }}>Your Name</Label>
-                                            <Col md={{ size: 12 }}>
-                                                <Control.text model=".author" id="author" name="author" placeholder="Your Name"
-                                                    className="form-control" onChange={(event) => setAuthor(event.target.value)}
-                                                    validators={{ required, minLength: minLength(3), maxLength: maxLength(15) }}
-                                                    value={author} />
-                                                <Errors className="text-danger" model=".author"
-                                                    show="touched"
-                                                    messages={{
-                                                        required: 'Requierd ',
-                                                        minLength: 'Must be greater than 2 characters ',
-                                                        maxLength: 'Must be 15 characters or less '
-                                                    }}>
-                                                </Errors>
-                                            </Col>
-                                        </Row>
-                                        <Row className="form-group">
-                                            <Label htmlFor="comment" md={{ size: 12 }}>Comment</Label>
-                                            <Col md={{ size: 12 }}>
-                                                <Control.textarea model=".comment" id="comment" name="comment"
-                                                    rows="6" className="form-control" value={comment}
-                                                    onChange={(event) => setComment(event.target.value)} />
-                                            </Col>
-                                        </Row>
-                                        <Row className="form-group">
-                                            <Col md={{ size: 12 }}>
-                                                <Button type="submit" color="primary">
-                                                    Submit
-                                                    </Button>
-                                            </Col>
-                                        </Row>
-                                    </LocalForm>
-                                </ModalBody>
-                            </Modal>
                         </div>
                     </div>
                 </div>
-
-            </div>
-        );
-    }
-    catch (e) {
-        console.log("catch");
-        return (<div>
-            {e}
-            {errMess}
-        </div>)
-    }
+}
+        </div>
+    );
 }
 
 export default DishDetail;
