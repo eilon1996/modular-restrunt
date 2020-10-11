@@ -8,6 +8,7 @@ import EditBox from './EditBox';
 import { useDropzone } from 'react-dropzone'
 import { useSelector, useDispatch } from 'react-redux';
 import { putContent } from '../redux/ActionCreators';
+import UploadS3 from './UploadS3';
 
 
 
@@ -70,7 +71,7 @@ function About(props) {
                     <form onSubmit={(event) => handleSubmit(event)}>
                         <Media tag='li'>
                             <Media left middle>
-                                <p>add photo<br />coming soon...</p>
+                                <UploadS3/>
                             </Media>
                             <Media body className="ml-5">
                                 <Media heading>

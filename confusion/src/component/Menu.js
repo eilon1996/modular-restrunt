@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardImg, CardImgOverlay, CardTitle, Breadcrumb, BreadcrumbItem, Collapse, CardBody, CardText } from 'reactstrap';
 import MultiSelect from "react-multi-select-component";
 import { Link } from 'react-router-dom';
 import Loading from './Loading'
 import { useSelector, useDispatch } from 'react-redux';
 import { putContent } from '../redux/ActionCreators';
+import UploadS3 from './UploadS3';
 
 
 const Menu = (props) => {
@@ -19,6 +20,11 @@ const Menu = (props) => {
         const [title, setTitle] = useState();
         const [selected, setSelected] = useState([]);
         const [description, setDescription] = useState();
+        const [imgUrl, setImgUrl] = useState();
+
+        useEffect(() => {
+            console.log("useEffect, ", imgUrl);
+        }, [imgUrl, setImgUrl])
 
         const options = [
             { label: "Hot 🌶", value: "Hot 🌶" },
@@ -34,6 +40,7 @@ const Menu = (props) => {
             newDish.description.text = description;
             newDish.id = amount;
             newDish.comments=null;
+            newDish.image=imgUrl;
             myContent.dishes[amount] = newDish;
             setShowForm(false);
             dispatch(putContent(myContent));
@@ -55,7 +62,7 @@ const Menu = (props) => {
                                 <input value={title} onChange={(event) => setTitle(event.target.value)} name="title" placeholder="dish name" />
                             </CardTitle>
                             <CardBody>
-                                <p>add photo <br />coming soon...</p>
+                                <UploadS3 type={"dishes"} itemId={Object.keys(myContent.dishes).length} myId={myContent.id} setImgUrl={setImgUrl}/>
                                 <CardText>
                                     {(selected && selected.length == 2) ? <div>Hot 🌶 &amp; Vegan 🌱</div> : null}
                                     <MultiSelect

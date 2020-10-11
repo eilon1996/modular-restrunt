@@ -26,7 +26,7 @@ const EditBox = (props) => {
         return null;
     })
 
-    const [debouncedFontSize] = useDebounce(fontSize, 2000);
+    const [debouncedFontSize] = useDebounce(fontSize, 750);
 
 
 
@@ -78,12 +78,12 @@ const EditBox = (props) => {
     
   
     function handleSubmit(event){
+        event.preventDefault();
         console.log("handleSubmit, parentText", parentText)
         myContent[props.type][props.id][props.field].text = parentText
         myContent[props.type][props.id][props.field].fontFamily = fontFamily
         dispatch(putContent(myContent));
         setEdit(false)
-        event.preventDefault();
     }
 
 

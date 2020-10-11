@@ -1,0 +1,75 @@
+.wrapper{
+    margin: 0;
+    padding: 0;
+    width: 90%;
+    height: 25px;
+    background-color: gray;
+}
+
+.progress{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    position: relative;
+    left: 0;
+}
+
+#p0{
+
+    width: 0%;
+    background-color: gray;
+    animation-name: p0;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+#p25{
+
+    width: 25%;
+    background-color: rgb(128, 0, 0);
+    animation-name: p25;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+@keyframes p25{
+    0%{background-color: gray; width: 0%;}
+    100%{background-color: rgb(128, 0, 0); width: 25%;}
+}
+
+#p50{
+
+    width: 50%;
+    background-color: rgb(128, 87, 0);
+    animation-name: p50;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+@keyframes p50{
+    0%{background-color: rgb(128, 0, 0); width: 25%;}
+    100%{background-color:  rgb(128, 87, 0); width: 50%;}
+}
+
+#p75{
+
+    width: 75%;
+    background-color: rgb(94, 128, 0);
+    animation-name: p75;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+@keyframes p75{
+    0%{background-color: rgb(128, 87, 0); width: 50%;}
+    100%{background-color:  rgb(94, 128, 0); width: 75%;}
+}
+
+#p100{
+    width: 100%;
+    background-color: green;
+    animation-name: p100;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+}
+@keyframes p100{
+    0%{background-color:  rgb(94, 128, 0);; width: 75%;}
+    100%{background-color:  green; width: 10%;}
+}

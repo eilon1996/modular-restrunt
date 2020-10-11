@@ -6,27 +6,23 @@ import { baseUrl } from '../shared/externalUrl';
 ////////////  signup  ////////////
 
 export const signup = (jsonObject) => (dispatch) => {
-  const id = String(jsonObject.id);
-  const newJson = {};
-  newJson[id]=jsonObject;
   
-  
-  return fetch(baseUrl + '/content.json', {
-      method: "PATCH",
-      body: JSON.stringify(newJson),
+  return fetch("http://localhost:5001/signup", {
+      method: "POST",
+      body: JSON.stringify(jsonObject),
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       credentials: "same-origin"
   })
   .then(response => {
     console.log("signup");
       if (response.ok) {
+        console.log("response", response);
         return response;
       } else {
-        var error = new Error('Error ' + response.status + ': ' + response.statusText);
-        error.response = response;
-        throw error;
+        console.log("response-error", response);
+        return response;
       }
     },
     error => {
@@ -34,11 +30,10 @@ export const signup = (jsonObject) => (dispatch) => {
     })
   .then(response => response.json())
   .then(response => {
-    dispatch(addMyContent(response[id])); // use fetch
-  })
-  .then(response => {
-    dispatch(addContent(response));
-    alert('your sign up was successful');
+    console.log("response.json()", response);
+    jsonObject["token"] = response["token"];
+    addMyContent(jsonObject);
+    alert("you signed up succefuly");
   })
   .catch(error =>  { console.log('submmit content', error.message);
    alert('Your content could not be submited\nError: '+error.message); });

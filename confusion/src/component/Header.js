@@ -97,6 +97,7 @@ const Header = (props) => {
 
 
     function handleSignup(event){
+        event.preventDefault();
         console.log({signupUsername, signupPassword, signupRePassword})
         var tmpError = "";
         
@@ -109,7 +110,6 @@ const Header = (props) => {
             loginBorderColor = "green";
         
         
-        event.preventDefault();
         if(tmpError !== ""){
             setSignupError(tmpError);
         }
@@ -118,10 +118,8 @@ const Header = (props) => {
             setSignupError(null);
             myContent.id = signupUsername;
             myContent.password = signupPassword;
-            dispatch(signup(myContent))
-
-
-            //intial user 0
+            dispatch(signup(myContent));
+            setIsModalOpen(false);
         }   
     }
 
