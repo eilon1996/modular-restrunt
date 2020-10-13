@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useSelector } from 'react';
+import React, { useEffect } from 'react';
 // the next comment allow the compiler to ignore the problem
 // eslint-disable-next-line
 import Menu from './Menu';
@@ -10,8 +10,7 @@ import Header from './Header';
 import Footer from './Footer';
 import {Switch, Route, Redirect} from 'react-router-dom';
 import { connect } from 'react-redux'
-import { actions } from 'react-redux-form';
-import { postFeedback, fetchContent,fetchMyContent } from '../redux/ActionCreators';
+import { fetchMyContent } from '../redux/ActionCreators';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { withRouter } from 'react-router';
 
@@ -29,11 +28,7 @@ const mapDispatchToProps = dispatch => {
   
   console.log("mapDispatchToProps")
   return{
-    postFeedback: (firstName, lastName, telNum, email, agree, contactType, message) => dispatch(postFeedback(firstName, lastName, telNum, email, agree, contactType, message)),
-    
     fetchMyContent: (id) =>  dispatch(fetchMyContent(id)),
-    fetchContent: () =>  dispatch(fetchContent()),
-    resetFeedbackForm: () =>  dispatch(actions.reset('feedback'))
    }
   };
 
@@ -41,11 +36,14 @@ function Main(props){
 
   useEffect(() => {
     props.fetchMyContent(0);
-    props.fetchContent();
   }, [])
     
     const HeaderPart = () => {
       return(<Header />);
+    };
+
+    const FooterPart = () => {
+      return(<Footer />);
     };
 
     return(
@@ -65,7 +63,7 @@ function Main(props){
               </Switch>
             </CSSTransition>
           </TransitionGroup>
-        <Footer />
+        <FooterPart />
         </div>
   );
   

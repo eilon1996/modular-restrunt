@@ -62,13 +62,13 @@ function Home(props) {
     return(
         <div className="container">
             <div className="row align-items-start">
-                <div className="col-12 col-md m-1">
+                <div className="delete-on-phone col-md-4 p-3">
                     <RenderCard item={myContent.dishes[0]}/>
                 </div>
-                <div className="col-12 col-md m-1">
+                <div className="col-12 col-md-4 p-3">
                     <RenderCard item={myContent.thePlace[0]}/>
                 </div>
-                <div className="col-12 col-md m-1">
+                <div className="delete-on-phone col-md-4 p-3">
                     <RenderCard item={myContent.staff[0]} />
                 </div>
             </div>

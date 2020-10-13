@@ -62,7 +62,7 @@ const Menu = (props) => {
                                 <input value={title} onChange={(event) => setTitle(event.target.value)} name="title" placeholder="dish name" />
                             </CardTitle>
                             <CardBody>
-                                <UploadS3 type={"dishes"} itemId={Object.keys(myContent.dishes).length} myId={myContent.id} setImgUrl={setImgUrl}/>
+                                <UploadS3 type={"dishes"} itemId={Object.keys(myContent.dishes).length} contentId={myContent.id} imgUrl={imgUrl} setImgUrl={setImgUrl}/>
                                 <CardText>
                                     {(selected && selected.length == 2) ? <div>Hot 🌶 &amp; Vegan 🌱</div> : null}
                                     <MultiSelect

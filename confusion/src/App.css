@@ -1,26 +1,11 @@
 
+
 /*****HEADER*****/
-
-.navbar-dark {
-}
-
-.navbar-light {
-}
-
 
 .jumbotron {
   padding:40px 30px ;
   margin:0px 0px 30px 0px;
   color: white;
-}
-
-.container{
-  padding: 0px;
-}
-
-.row{
-  padding: 0px;
-  margin:0px;
 }
 
 .div-colorpicker {
@@ -61,14 +46,12 @@
 
 
 .footer{
-  margin:0px auto;
   padding: 20px 0px 20px 0px;
 }
 
 .edit-save{
   height: 22px;
   width : 50px;
-  padding: 0px;
   font-size: 14px;
 }
 .edit-save-arrow{
@@ -121,10 +104,30 @@ address{
 
 /*////////// edit box /////////*/
 
-.button-edit-box{
-  height: '240px';
-  width : '50px';
-  font-size:'14px';
-  padding:'0px';
-  background: #181818;
+.edit-save{
+  padding:0px;
+}
+
+
+
+h1{
+  text-align: center;
+}
+/*//////// home page ///////*/
+
+
+@media screen and (max-width: 768) {
+.delete-on-phone{
+  display: none;
+}
+
+jumbotron{
+  padding: auto;
+}
+
+.header{
+  margin: auto;
+  justify-self: center;
+}
+
 }
